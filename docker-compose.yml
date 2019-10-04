@@ -1,0 +1,51 @@
+---
+  version: "3"
+  services: 
+    node: 
+      image: "becodeorg/node"
+      environment: 
+        NODE_ENV: "development"
+        PORT: 12345
+      volumes: 
+        - "./package.json:/src/app/package.json"
+        - "./node_modules:/src/app/node_modules"
+        - "./bin:/src/app/bin"
+      expose: 
+        - "12345"
+        - "9229"
+      ports: 
+        - "80:12345"
+        - "9229"
+      command: "nodemon --inspect=0.0.0.0:9229 --watch bin/server/index.js"
+    postgres: 
+      image: "postgres"
+      restart: "unless-stopped"
+      ports: 
+        - "5432:5432"
+      volumes: 
+        - "postgres_db:/var/lib/postgresql/data"
+      environment: 
+        POSTGRES_USER: "dev"
+        POSTGRES_PASSWORD: "dev"
+      networks:
+        - postgres
+    pgadmin:
+      image: "dpage/pgadmin4"
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: admin
+      volumes:
+        - "pgadmin:/root/.pgadmin"
+      ports:
+        - "5050:80"
+      networks:
+        - postgres
+      restart: unless-stopped
+
+  networks:
+    postgres:
+      driver: bridge
+
+  volumes: 
+    postgres_db:
+    pgadmin:
