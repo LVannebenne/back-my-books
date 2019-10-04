@@ -1,0 +1,53 @@
+But : https://github.com/the-road-to-graphql/fullstack-apollo-express-postgresql-boilerplate
+
+
+
+
+
+
+
+
+1)installation and setup of postgreSQL
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04
+
+$ sudo apt update
+$ sudo apt install postgresql postgresql-contrib
+response : 
+"
+Success. You can now start the database server using:
+
+    /usr/lib/postgresql/10/bin/pg_ctl -D /var/lib/postgresql/10/main -l logfile start
+"
+
+Mais pour utiliser les commandes liées à postgresql, on doit se connecter en tant qu'utilisateur postgreSQL avec ;
+
+$ sudo -i -u postgres
+
+et on se connecter à un postgreSQL prompt avec ;
+
+$ psql
+
+ et on en sort avec ;
+
+ $ \q
+
+
+Ensuite, on crèe des rôles d'utilisateurs de la db; j'ai créé "admin" et "dev",
+ATTENTION :
+"Another assumption that the Postgres authentication system makes by 
+default is that for any role used to log in, that role will have a database with the same name which it can access."
+
+
+
+
+
+
+
+
+
+
+2)POSTGRESQL WITH SEQUELIZE IN EXPRESS INSTALLATION
+https://www.robinwieruch.de/postgres-express-setup-tutorial
+
+3)GraphQL Server Tutorial with Apollo Server and Express
+https://www.robinwieruch.de/graphql-apollo-server-tutorial

@@ -1,4 +1,9 @@
-# A book available to borrow
+
+# Written in SDL (Schema Definition Language)
+# from this schema, use https://www.npmjs.com/package/graphql-directive-sql to generate SQL tables ?
+# type "bookEdge" , il concerne la pagination mise en place via GraphQL 
+# -> https://graphql.org/learn/pagination/#pagination-and-edges%E2%80%8E%E2%80%8F
+
 type Book {
   isbn: ID!
   title: String!
