@@ -1,0 +1,107 @@
+# A book available to borrow
+type Book {
+  isbn: ID!
+  title: String!
+  author: String!
+  editor: String!
+  lang: Language!
+  cover: URL
+  format: BookFormat!
+  availabilities: [BookAvailability!]!
+  # Collection of book reviews (by juniors and coaches)
+  reviews(
+    all: Boolean
+    first: Int
+    last: Int
+    before: String
+    after: String
+  ): BookReviewsConnection!
+}
+
+type BookAvailability {
+  school: School!
+  borrower: Person
+  available: Boolean!
+}
+
+type BookEdge {
+  cursor: String!
+  node: Book
+}
+
+input BookFilter {
+  fields: [BookFilterField!]!
+  query: String!
+  fuzzy: Boolean
+}
+
+enum BookFilterField {
+  TITLE
+  AUTHOR
+  EDITOR
+}
+
+enum BookFormat {
+  PHYSICAL
+  EBOOK
+  BOTH
+}
+
+input BookOrder {
+  direction: OrderDirection!
+  field: BookOrderField!
+}
+
+enum BookOrderField {
+  TITLE
+  AUTHOR
+  EDITOR
+}
+
+# A review of a borrowable book
+type BookReview {
+  uid: ID!
+  book: Book!
+  lang: Language!
+  # Author of the review (Coach, Staff or Junior)
+  reviewer: Person!
+  # Appreciation note (from 1 to 5)
+  note: Int!
+  comment: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type BookReviewEdge {
+  cursor: String!
+  node: BookReview
+}
+
+input BookReviewInput {
+  note: BookReviewNote!
+  lang: String
+  comment: String
+}
+
+enum BookReviewNote {
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+}
+
+type BookReviewsConnection {
+  totalCount: Int!
+  edges: [BookReviewEdge]!
+  nodes: [BookReview]!
+  pageInfo: PageInfo!
+}
+
+type BooksConnection {
+  totalCount: Int!
+  edges: [BookEdge]!
+  nodes: [Book]!
+  pageInfo: PageInfo!
+}
+
