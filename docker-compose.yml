@@ -25,10 +25,10 @@
       volumes: 
         - "postgres_db:/var/lib/postgresql/data"
       environment: 
-        POSTGRES_USER: "dev"
-        POSTGRES_PASSWORD: "dev"
-      networks:
-        - postgres
+        POSTGRES_USER: dev
+        POSTGRES_PASSWORD: dev
+        POSTGRES_DB: library
+        POSTGRES_HOST: postgres
     pgadmin:
       image: "dpage/pgadmin4"
       environment:
@@ -38,13 +38,7 @@
         - "pgadmin:/root/.pgadmin"
       ports:
         - "5050:80"
-      networks:
-        - postgres
       restart: unless-stopped
-
-  networks:
-    postgres:
-      driver: bridge
 
   volumes: 
     postgres_db:
