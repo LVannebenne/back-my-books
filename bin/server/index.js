@@ -1,7 +1,5 @@
 "use strict";
 
-require("dotenv/config");
-
 var _express = _interopRequireDefault(require("express"));
 
 var _expressGraphql = _interopRequireDefault(require("express-graphql"));
