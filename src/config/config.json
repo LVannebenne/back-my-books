@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "dev",
+    "password": "dev",
+    "database": "library",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "dev",
+    "password": "dev",
+    "database": "library",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "dev",
+    "password": "dev",
+    "database": "library",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  }
+}
