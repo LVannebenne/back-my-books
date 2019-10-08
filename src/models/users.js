@@ -9,12 +9,11 @@ module.exports = (sequelize, DataTypes) => {
     users_email: DataTypes.STRING,
     users_password: DataTypes.STRING,
     users_role: DataTypes.STRING,
-    createdAt: DataTypes.STRING,
-    updatedAt: DataTypes.STRING
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
   }, {});
   users.associate = function(models) {
     // associations can be defined here
   };
-  users.removeAttribute('id');
   return users;
 };

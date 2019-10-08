@@ -5,8 +5,7 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4
+        type: Sequelize.UUID
       },
       users_username: {
         type: Sequelize.STRING
@@ -21,10 +20,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       createdAt: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
       updatedAt: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       }
     });
   },

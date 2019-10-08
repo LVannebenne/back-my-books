@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = function (sequelize, DataTypes) {
-  var users = sequelize.define('users', {
+module.exports = (sequelize, DataTypes) => {
+  const users = sequelize.define('users', {
     id: {
       primaryKey: true,
       type: DataTypes.UUID
@@ -10,13 +10,12 @@ module.exports = function (sequelize, DataTypes) {
     users_email: DataTypes.STRING,
     users_password: DataTypes.STRING,
     users_role: DataTypes.STRING,
-    createdAt: DataTypes.STRING,
-    updatedAt: DataTypes.STRING
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
   }, {});
 
   users.associate = function (models) {// associations can be defined here
   };
 
-  users.removeAttribute('id');
   return users;
 };

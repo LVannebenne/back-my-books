@@ -1,13 +1,12 @@
 'use strict';
 
 module.exports = {
-  up: function up(queryInterface, Sequelize) {
+  up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('users', {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4
+        type: Sequelize.UUID
       },
       users_username: {
         type: Sequelize.STRING
@@ -22,14 +21,14 @@ module.exports = {
         type: Sequelize.STRING
       },
       createdAt: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
       updatedAt: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       }
     });
   },
-  down: function down(queryInterface, Sequelize) {
+  down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('users');
   }
 };

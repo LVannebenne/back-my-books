@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  up: function up(queryInterface, Sequelize) {
+  up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('users', [{
       id: "bd437afe-c78d-4a37-a926-5b045f730fcc",
       users_username: "MyUsername",
@@ -21,7 +21,7 @@ module.exports = {
       }], {});
     */
   },
-  down: function down(queryInterface, Sequelize) {
+  down: (queryInterface, Sequelize) => {
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.
