@@ -20,6 +20,12 @@ const resolvers = {
           id: args.id
         }
       });
+    },
+
+    getAllBooks(root, arg, {
+      models
+    }) {
+      return models.book.findAll();
     }
 
   },

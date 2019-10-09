@@ -6,12 +6,17 @@ const resolvers = {
             return models.users.findAll();
         },
         getUser(root, args, { models }) {
-            return models.users.findOne({where:{id: args.id}});
-        }
+            return models.users.findOne({ where: { id: args.id } });
+        },
+        getAllBooks(root, arg, {
+            models
+        }) {
+            return models.book.findAll();
+        },
     },
     Mutation: {
         createUser(root, args, { models }) {
-            const newUser =  {
+            const newUser = {
                 id: uuidv4(),
                 users_username: args.users_username,
                 users_email: args.users_email,
