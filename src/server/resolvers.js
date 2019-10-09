@@ -19,9 +19,7 @@ const resolvers = {
                 users_role: 'users',
                 createdAt: new Date(),
                 updatedAt: new Date()
-                
             }
-            console.log(newUser);
             models.users.create(newUser);
             return newUser;
         }

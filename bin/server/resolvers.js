@@ -36,7 +36,6 @@ const resolvers = {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-      console.log(newUser);
       models.users.create(newUser);
       return newUser;
     }
