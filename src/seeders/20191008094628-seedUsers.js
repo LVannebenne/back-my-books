@@ -1,9 +1,10 @@
 'use strict';
+const uuidv4 = require("uuid/v4");
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('users', [{
-      id: "bd437afe-c78d-4a37-a926-5b045f730fcc",
+      id: uuidv4(),
       users_username: "MyUsername",
       users_email: "MyEmail",
       users_password: "BadPassword",
