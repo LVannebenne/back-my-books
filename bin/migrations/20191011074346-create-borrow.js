@@ -13,16 +13,16 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'users',
-          key: 'id',
-        },
+          key: 'id'
+        }
       },
       book_id: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'books',
-          key: 'id',
-        },
+          key: 'id'
+        }
       },
       date_borrowed: {
         type: Sequelize.DATE

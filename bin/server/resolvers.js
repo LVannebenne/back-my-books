@@ -71,17 +71,9 @@ const resolvers = {
         where: {
           id: args.id
         }
-      });
-      borrow.users_id = await models.users.findOne({
-        where: {
-          id: borrow.users_id
-        }
-      });
-      borrow.book_id = await models.book.findOne({
-        where: {
-          id: borrow.book_id
-        }
-      });
+      }); //borrow.users_id = await models.users.findOne({ where: { id: borrow.users_id } });
+      //borrow.book_id = await models.book.findOne({ where: { id: borrow.book_id } });
+
       console.log(borrow);
       return borrow;
     }

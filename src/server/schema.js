@@ -49,8 +49,8 @@ const typeDefs = gql(`
             book_stock: Int
             ): Book
         createBorrow(
-            users_id: String,
-            book_id: String,
+            users_id: ID,
+            book_id: ID,
         ): Borrow
     }
 `);

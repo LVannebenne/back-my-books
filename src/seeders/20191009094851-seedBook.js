@@ -5,8 +5,8 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('books', [{
       id: uuidv4(),
-      book_ISBN10: "9780451524935",
-      book_ISBN13: "0451524934",
+      book_ISBN10: "0451524934",
+      book_ISBN13: "9780451524935",
       book_title: "1984",
       book_subtitle: "",
       book_authors: ["George Orwell"],
