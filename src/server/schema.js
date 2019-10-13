@@ -1,27 +1,13 @@
 import { gql } from "apollo-server-express";
+import { typeDef as Users } from "./resolvers/users-resolvers";
+import { typeDef as Book } from "./resolvers/book-resolvers";
+import { typeDef as Borrow } from "./resolvers/borrow-resolvers";
+
 
 const typeDefs = gql(`
-    type Users {
-        id: String
-        users_username: String
-        users_email: String
-        users_role: String
-        createdAt: String
-        updatedAt: String
-    }
-    type Book {
-        id: String
-        book_title: String
-        book_ISBN10: String
-        book_ISBN13: String
-    }
-    type Borrow {
-        id: String
-        users_id: Users
-        book_id: Book
-        date_borrowed: String
-        date_return: String
-    }
+    ${Users}
+    ${Book}
+    ${Borrow}
     type Query {
         getAllUsers(limit: Int): [Users]
         getUser(id: String): Users
@@ -52,6 +38,15 @@ const typeDefs = gql(`
             users_id: ID,
             book_id: ID,
         ): Borrow
+        deleteBook(
+            id: ID
+        ): String
+        deleteBorrow(
+            id: ID
+        ): String
+        deleteUser(
+            id: ID
+        ): String
     }
 `);
 

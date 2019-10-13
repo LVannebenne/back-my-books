@@ -16,7 +16,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //import graphqlHTTP from "express-graphql";
 //import { buildSchema } from "graphql";
-const sequelize = new _sequelize.default(`postgres://dev:dev@postgres:5432/library`);
+//const sequelize = new Sequelize(`postgres://dev:dev@postgres:5432/library`);
 const server = new _apolloServerExpress.ApolloServer({
   typeDefs: _schema.default,
   resolvers: _resolvers.default,
@@ -25,8 +25,25 @@ const server = new _apolloServerExpress.ApolloServer({
   }
 });
 const app = (0, _express.default)();
+app.get('/', (req, res) => {
+  console.log(req.headers);
+  res.send("hello");
+});
+app.get('/login', (req, res) => {
+  console.log(req.headers);
+  res.send(`
+    <form method="POST"action="#">
+        <input type="text" name="test" placeholder="Login">
+        <input type="password" name="pass" placeholder="Password">
+        <input type="submit" value="login">
+    </form>`);
+});
+app.post('/login', (req, res) => {
+  res.send(`<p>It Works</p>`);
+});
 server.applyMiddleware({
-  app
+  app,
+  path: "/explore"
 });
 
 _models.default.sequelize.authenticate();

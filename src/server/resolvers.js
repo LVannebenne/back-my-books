@@ -48,6 +48,10 @@ const resolvers = {
             await models.users.create(newUser);
             return newUser;
         },
+        async deleteUser(root, args, { models }) {
+            await models.users.destroy({ where: { id: args.id } })
+            return "Deleted user with id: "+ args.id;
+        },
         async createBook(root, args, { models }) {
             const newBook = {
                 id: uuidv4(),
@@ -65,6 +69,10 @@ const resolvers = {
             await models.book.create(newBook);
             return newBook;
         },
+        async deleteBook(root, args, { models }){
+            await models.book.destroy({ where: { id: args.id } })
+            return "Deleted book with id: "+ args.id;
+        },
         async createBorrow(root, args, { models }) {
             let today = new Date();
             let date_return = new Date();
@@ -78,6 +86,10 @@ const resolvers = {
             }
             await models.borrow.create(newBorrow);
             return newBorrow;
+        },
+        async deleteBorrow(root, args, { models }) {
+            await models.borrow.destroy({ where: { id: args.id } })
+            return "Deleted borrow with id: "+ args.id;
         }
     }
 }
