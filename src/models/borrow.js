@@ -5,16 +5,29 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.UUID,
     },
-    users_id: DataTypes.UUID,
-    book_id: DataTypes.UUID,
+    user_id: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
+    },
+    book_id: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'books',
+        key: 'id',
+      },
+    },
     date_borrowed: DataTypes.DATE,
-    date_return: DataTypes.DATE
+    date_return: DataTypes.DATE,
   }, {
     timestamps: false,
   });
   borrow.associate = function(models) {
     // associations can be defined here 
-    borrow.hasMany(models.users, {foreignKey: 'id', as : 'users'})
+    borrow.belongsTo(models.user, {foreignKey: 'user_id', as : 'user', targetKey: 'id'})
+    borrow.belongsTo(models.book, {foreignKey: 'book_id', as : 'book', targetKey: 'id'})
   };
   return borrow;
 };

@@ -3,7 +3,7 @@ const uuidv4 = require("uuid/v4");
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('borrows', {
+    return queryInterface.createTable('comments', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -18,23 +18,26 @@ module.exports = {
           key: 'id',
         },
       },
-      book_id: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: 'books',
-          key: 'id',
-        },
+      comment_title: {
+        type: Sequelize.STRING
       },
-      date_borrowed: {
+      comment_content: {
+        type: Sequelize.STRING
+      },
+      comment_rating: {
+        type: Sequelize.INTEGER
+      },
+      createdAt: {
+        allowNull: false,
         type: Sequelize.DATE
       },
-      date_return: {
+      updatedAt: {
+        allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('borrows');
+    return queryInterface.dropTable('comments');
   }
 };

@@ -3,11 +3,11 @@ import uuidv4 from "uuid/v4";
 const resolvers = {
     Query: {
         async getAllUsers(root, args, { token, models }) {
-            const users = await models.users.findAll({ limit: args.limit || 5 });
+            const users = await models.user.findAll({ limit: args.limit || 5 });
             return users;
         },
         async getUser(root, args, { token, models }) {
-            const user = await models.users.findOne({ where: { id: args.id } });
+            const user = await models.user.findOne({ where: { id: args.id } });
             return user;
         },
         async getAllBooks(root, arg, { token, models }) {
@@ -18,15 +18,15 @@ const resolvers = {
 
         },
         async getAllBorrows(root, args, { token, models }) {
-            let borrows = await models.borrow.findAll();
-            for (let borrow of borrows) {
-                borrow.dataValues.users_id = models.users.findOne({ where: { id: borrow.users_id } });
+            let borrows = await models.borrow.findAll({include: ['user','book']});
+            /*for (let borrow of borrows) {
+                borrow.dataValues.user_id = models.user.findOne({ where: { id: borrow.user_id } });
                 borrow.dataValues.book_id = models.book.findOne({ where: { id: borrow.book_id } });
-            }
+            }*/
             return borrows;
         },
         async getBorrow(root, args, { token, models }) {
-            let borrow = await models.borrow.findOne({ where: { id: args.id } });
+            let borrow = await models.borrow.findOne({ where: { id: args.id }});
             return borrow;
         }
     },
@@ -34,18 +34,18 @@ const resolvers = {
         async createUser(root, args, { token, models }) {
             const newUser = {
                 id: uuidv4(),
-                users_username: args.users_username,
-                users_email: args.users_email,
-                users_password: args.users_password,
-                users_role: 'users',
+                user_username: args.user_username,
+                user_email: args.user_email,
+                user_password: args.user_password,
+                user_role: 'user',
                 createdAt: new Date(),
                 updatedAt: new Date()
             }
-            await models.users.create(newUser);
+            await models.user.create(newUser);
             return newUser;
         },
         async deleteUser(root, args, { token, models }) {
-            await models.users.destroy({ where: { id: args.id } })
+            await models.user.destroy({ where: { id: args.id } })
             return "Deleted user with id: "+ args.id;
         },
         async createBook(root, args, { token, models }) {
@@ -75,7 +75,7 @@ const resolvers = {
             date_return.setDate(today.getDate() + 30);
             const newBorrow = {
                 id: uuidv4(),
-                users_id: args.users_id,
+                user_id: args.user_id,
                 book_id: args.book_id,
                 date_borrowed: today.toUTCString(),
                 date_return: date_return

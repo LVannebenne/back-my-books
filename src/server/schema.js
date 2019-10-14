@@ -1,16 +1,16 @@
 import { gql } from "apollo-server-express";
-import { typeDef as Users } from "./resolvers/users-resolvers";
+import { typeDef as User } from "./resolvers/user-resolvers";
 import { typeDef as Book } from "./resolvers/book-resolvers";
 import { typeDef as Borrow } from "./resolvers/borrow-resolvers";
 
 
 const typeDefs = gql(`
-    ${Users}
+    ${User}
     ${Book}
     ${Borrow}
     type Query {
-        getAllUsers(limit: Int): [Users]
-        getUser(id: String): Users
+        getAllUsers(limit: Int): [User]
+        getUser(id: String): User
         getAllBooks: [Book]
         getBook(id: String): Book
         getAllBorrows: [Borrow]
@@ -18,10 +18,10 @@ const typeDefs = gql(`
     }
     type Mutation {
         createUser(
-            users_username: String!,
-            users_email: String!, 
-            users_password: String!
-            ): Users
+            user_username: String!,
+            user_email: String!, 
+            user_password: String!
+            ): User
         createBook(
             book_title: String!,
             book_subtitle: String,
@@ -35,7 +35,7 @@ const typeDefs = gql(`
             book_stock: Int
             ): Book
         createBorrow(
-            users_id: ID,
+            user_id: ID,
             book_id: ID,
         ): Borrow
         deleteBook(
