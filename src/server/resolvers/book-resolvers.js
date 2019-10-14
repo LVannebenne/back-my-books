@@ -2,8 +2,8 @@
 
 export const typeDef = `
     type Book {
-        id: String
-        book_title: String
+        id: ID!
+        book_title: String!
         book_subtitle: String
         book_ISBN10: String
         book_ISBN13: String

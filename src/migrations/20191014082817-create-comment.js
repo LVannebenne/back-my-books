@@ -18,6 +18,14 @@ module.exports = {
           key: 'id',
         },
       },
+      book_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'books',
+          key: 'id',
+        },
+      },
       comment_title: {
         type: Sequelize.STRING
       },

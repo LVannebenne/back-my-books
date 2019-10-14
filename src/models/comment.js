@@ -5,15 +5,28 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.UUID,
     },
-    user_id: DataTypes.UUID,
+    user_id: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
+    },
+    book_id: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'books',
+        key: 'id',
+      },
+    },
     comment_title: DataTypes.STRING,
     comment_content: DataTypes.STRING,
     comment_rating: DataTypes.INTEGER
   }, {});
   comment.associate = function(models) {
     // associations can be defined here
-    comment.belongsTo(models.user, { foreignKey: 'id', as : 'user'});
-    comment.belongsTo(models.book, { foreignKey: 'id', as : 'book'});
+    comment.belongsTo(models.user, { foreignKey: 'user_id', as : 'user', targetKey: 'id'});
+    comment.belongsTo(models.book, { foreignKey: 'book_id', as : 'book', targetKey: 'id'});
   };
   return comment;
 };

@@ -10,15 +10,15 @@ const resolvers = {
             const user = await models.user.findOne({ where: { id: args.id } });
             return user;
         },
-        async getAllBooks(root, arg, { token, models }) {
-            return await models.book.findAll();
+        async getAllBooks(root, args, { token, models }) {
+            return await models.book.findAll({ limit: args.limit || 5 });
         },
         async getBook(root, args, { token, models }) {
             return await models.book.findOne({ where: { id: args.id } });
 
         },
         async getAllBorrows(root, args, { token, models }) {
-            let borrows = await models.borrow.findAll({include: ['user','book']});
+            let borrows = await models.borrow.findAll({ limit: args.limit || 5, include: ['user', 'book'] });
             /*for (let borrow of borrows) {
                 borrow.dataValues.user_id = models.user.findOne({ where: { id: borrow.user_id } });
                 borrow.dataValues.book_id = models.book.findOne({ where: { id: borrow.book_id } });
@@ -26,8 +26,20 @@ const resolvers = {
             return borrows;
         },
         async getBorrow(root, args, { token, models }) {
-            let borrow = await models.borrow.findOne({ where: { id: args.id }});
+            let borrow = await models.borrow.findOne({ where: { id: args.id } });
             return borrow;
+        },
+        async getAllComments(root, args, { token, models }) {
+            const comments = await models.comment.findAll({ limit: args.limit || 5 });
+            return comments;
+        },
+        async getCommentsByBook(root, args, { token, models }) {
+            const comments = await models.comment.findAll({ where: { book_id: args.book_id }, include: ['user','book'] });
+            return comments;
+        },
+        async getCommentsByUser(root, args, { token, models }) {
+            let comments = await models.comment.findAll({ where: { user_id: args.user_id }, include: ['user','book'] });
+            return comments;
         }
     },
     Mutation: {
@@ -46,7 +58,7 @@ const resolvers = {
         },
         async deleteUser(root, args, { token, models }) {
             await models.user.destroy({ where: { id: args.id } })
-            return "Deleted user with id: "+ args.id;
+            return "Deleted user with id: " + args.id;
         },
         async createBook(root, args, { token, models }) {
             const newBook = {
@@ -65,9 +77,9 @@ const resolvers = {
             await models.book.create(newBook);
             return newBook;
         },
-        async deleteBook(root, args, { token, models }){
+        async deleteBook(root, args, { token, models }) {
             await models.book.destroy({ where: { id: args.id } })
-            return "Deleted book with id: "+ args.id;
+            return "Deleted book with id: " + args.id;
         },
         async createBorrow(root, args, { token, models }) {
             let today = new Date();
@@ -85,7 +97,19 @@ const resolvers = {
         },
         async deleteBorrow(root, args, { token, models }) {
             await models.borrow.destroy({ where: { id: args.id } })
-            return "Deleted borrow with id: "+ args.id;
+            return "Deleted borrow with id: " + args.id;
+        },
+        async createComment(root, args, { token, models }) {
+            const newComment = {
+                id: uuidv4(),
+                user_id: args.user_id,
+                book_id: args.book_id,
+                comment_title: args.comment_title,
+                comment_content: args.comment_content,
+                comment_rating: args.comment_rating,
+            }
+            await models.comment.create(newComment);
+            return newComment;
         }
     }
 }
