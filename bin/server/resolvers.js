@@ -7,6 +7,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const resolvers = {
   Query: {
     async getAllUsers(root, args, {
+      token,
       models
     }) {
       const users = await models.users.findAll({
@@ -16,6 +17,7 @@ const resolvers = {
     },
 
     async getUser(root, args, {
+      token,
       models
     }) {
       const user = await models.users.findOne({
@@ -23,17 +25,18 @@ const resolvers = {
           id: args.id
         }
       });
-      console.log(user);
       return user;
     },
 
     async getAllBooks(root, arg, {
+      token,
       models
     }) {
       return await models.book.findAll();
     },
 
     async getBook(root, args, {
+      token,
       models
     }) {
       return await models.book.findOne({
@@ -44,6 +47,7 @@ const resolvers = {
     },
 
     async getAllBorrows(root, args, {
+      token,
       models
     }) {
       let borrows = await models.borrow.findAll();
@@ -65,22 +69,21 @@ const resolvers = {
     },
 
     async getBorrow(root, args, {
+      token,
       models
     }) {
       let borrow = await models.borrow.findOne({
         where: {
           id: args.id
         }
-      }); //borrow.users_id = await models.users.findOne({ where: { id: borrow.users_id } });
-      //borrow.book_id = await models.book.findOne({ where: { id: borrow.book_id } });
-
-      console.log(borrow);
+      });
       return borrow;
     }
 
   },
   Mutation: {
     async createUser(root, args, {
+      token,
       models
     }) {
       const newUser = {
@@ -97,6 +100,7 @@ const resolvers = {
     },
 
     async deleteUser(root, args, {
+      token,
       models
     }) {
       await models.users.destroy({
@@ -108,6 +112,7 @@ const resolvers = {
     },
 
     async createBook(root, args, {
+      token,
       models
     }) {
       const newBook = {
@@ -128,6 +133,7 @@ const resolvers = {
     },
 
     async deleteBook(root, args, {
+      token,
       models
     }) {
       await models.book.destroy({
@@ -139,6 +145,7 @@ const resolvers = {
     },
 
     async createBorrow(root, args, {
+      token,
       models
     }) {
       let today = new Date();
@@ -156,6 +163,7 @@ const resolvers = {
     },
 
     async deleteBorrow(root, args, {
+      token,
       models
     }) {
       await models.borrow.destroy({

@@ -1,18 +1,23 @@
 import express from "express";
-//import graphqlHTTP from "express-graphql";
-//import { buildSchema } from "graphql";
 import { ApolloServer, gql } from 'apollo-server-express';
-import Sequelize from "sequelize";
-//const sequelize = new Sequelize(`postgres://dev:dev@postgres:5432/library`);
-
 import typeDefs from "./schema";
 import resolvers from "./resolvers";
 import models from "../models";
 
-const server = new ApolloServer({ 
-    typeDefs, 
-    resolvers, 
-    context: ({ models }),
+
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req }) => {
+        // get the user token from the headers
+        const token = req.headers.authorization || '';
+
+        // try to retrieve a user with the token
+        // const user = getUser(token);
+
+        // add the user to the context
+        return { token, models };
+    },
 });
 const app = express();
 

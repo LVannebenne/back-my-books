@@ -4,8 +4,6 @@ var _express = _interopRequireDefault(require("express"));
 
 var _apolloServerExpress = require("apollo-server-express");
 
-var _sequelize = _interopRequireDefault(require("sequelize"));
-
 var _schema = _interopRequireDefault(require("./schema"));
 
 var _resolvers = _interopRequireDefault(require("./resolvers"));
@@ -14,14 +12,21 @@ var _models = _interopRequireDefault(require("../models"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import graphqlHTTP from "express-graphql";
-//import { buildSchema } from "graphql";
-//const sequelize = new Sequelize(`postgres://dev:dev@postgres:5432/library`);
 const server = new _apolloServerExpress.ApolloServer({
   typeDefs: _schema.default,
   resolvers: _resolvers.default,
-  context: {
-    models: _models.default
+  context: ({
+    req
+  }) => {
+    // get the user token from the headers
+    const token = req.headers.authorization || ''; // try to retrieve a user with the token
+    // const user = getUser(token);
+    // add the user to the context
+
+    return {
+      token,
+      models: _models.default
+    };
   }
 });
 const app = (0, _express.default)();
