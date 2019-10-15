@@ -6,6 +6,7 @@
       environment: 
         NODE_ENV: "development"
         PORT: 12345
+        SECRET : foImGIJpE8hTCjdyYe8AoRnW0A4HN28wTTlanafic3DoBhieVktMMRzL4ugGTpQl
       volumes: 
         - "./package.json:/src/app/package.json"
         - "./node_modules:/src/app/node_modules"
