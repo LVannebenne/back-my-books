@@ -9,6 +9,12 @@ const typeDefs = gql(`
     ${Book}
     ${Borrow}
     ${Comment}
+    type Opinion {
+        id: ID
+        comment_id: ID
+        user_id: ID
+        opinion: Boolean
+    }
     type Query {
         getAllUsers(limit: Int): [User]
         getUser(id: ID): User
@@ -19,6 +25,7 @@ const typeDefs = gql(`
         getAllComments(limit: Int): [Comment]
         getCommentsByBook(book_id: ID): [Comment]
         getCommentsByUser(user_id: ID): [Comment]
+        getOpinions(comment_id: ID): [Opinion]
     }
     type Mutation {
         createUser(
@@ -58,6 +65,11 @@ const typeDefs = gql(`
         deleteUser(
             id: ID
         ): String
+        giveOpinion(
+            comment_id: ID!,
+            user_id: ID!,
+            opinion: Boolean!
+        ): Opinion
     }
 `);
 

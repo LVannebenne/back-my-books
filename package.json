@@ -4,7 +4,7 @@
   "description": "",
   "main": "bin/server/index.js",
   "scripts": {
-    "work:server": "npx babel -w src  --out-dir bin",
+    "work:server": "npx babel -w src --out-dir bin",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -17,6 +17,7 @@
     "graphql": "^14.5.8",
     "graphql-sequelize": "^9.3.6",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.19.4",

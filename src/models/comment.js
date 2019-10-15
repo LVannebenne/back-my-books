@@ -25,8 +25,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   comment.associate = function(models) {
     // associations can be defined here
-    comment.belongsTo(models.user, { foreignKey: 'user_id', as : 'user', targetKey: 'id'});
-    comment.belongsTo(models.book, { foreignKey: 'book_id', as : 'book', targetKey: 'id'});
+    comment.belongsTo(models.user, { foreignKey: 'user_id', as : 'user', targetKey: 'id' });
+    comment.belongsTo(models.book, { foreignKey: 'book_id', as : 'book', targetKey: 'id' });
+    comment.hasMany(models.opinion, { foreignKey: 'id', as: 'opinion', targetKey: 'comment_id' });
   };
   return comment;
 };

@@ -1,4 +1,5 @@
 import uuidv4 from "uuid/v4";
+import { Op } from "sequelize";
 
 const resolvers = {
     Query: {
@@ -34,12 +35,46 @@ const resolvers = {
             return comments;
         },
         async getCommentsByBook(root, args, { token, models }) {
-            const comments = await models.comment.findAll({ where: { book_id: args.book_id }, include: ['user','book'] });
-            return comments;
+            try {
+                let comments = await models.comment.findAll({ where: { book_id: args.book_id }, include: ['user', 'book'] });
+                for await (let comment of comments) {
+                    comment.true = await models.opinion.count({
+                        where: {
+                            [Op.and]: [{ comment_id: comment.dataValues.id }, { opinion: true }]
+                        }
+                    });
+                    comment.false = await models.opinion.count({
+                        where: {
+                            [Op.and]: [{ comment_id: comment.dataValues.id }, { opinion: false }]
+                        }
+                    });
+                }
+                return comments;
+            }
+            catch (err) { console.log(err); throw new Error(err) }
         },
         async getCommentsByUser(root, args, { token, models }) {
-            let comments = await models.comment.findAll({ where: { user_id: args.user_id }, include: ['user','book'] });
-            return comments;
+            try {
+                let comments = await models.comment.findAll({ where: { user_id: args.user_id }, include: ['user', 'book'] });
+                for await (let comment of comments) {
+                    comment.true = await models.opinion.count({
+                        where: {
+                            [Op.and]: [{ comment_id: comment.dataValues.id }, { opinion: true }]
+                        }
+                    });
+                    comment.false = await models.opinion.count({
+                        where: {
+                            [Op.and]: [{ comment_id: comment.dataValues.id }, { opinion: false }]
+                        }
+                    });
+                }
+                return comments;
+            }
+            catch (err) { console.log(err); throw new Error(err) }
+        },
+        async getOpinions(root, args, { token, models }) {
+            let opinions = await models.opinion.findAll({ where: { comment_id: args.comment_id }, include: ['user', 'comment'] });
+            return opinions;
         }
     },
     Mutation: {
@@ -110,6 +145,16 @@ const resolvers = {
             }
             await models.comment.create(newComment);
             return newComment;
+        },
+        async giveOpinion(root, args, { token, models }) {
+            const newOpinion = {
+                id: uuidv4(),
+                comment_id: args.comment_id,
+                user_id: args.user_id,
+                opinion: args.opinion,
+            }
+            await models.opinion.create(newOpinion);
+            return newOpinion;
         }
     }
 }

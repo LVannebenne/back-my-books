@@ -10,5 +10,7 @@ export const typeDef = `
         comment_rating: Int
         user: User
         book: Book
+        true: Int
+        false: Int
     }
 `;
