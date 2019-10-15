@@ -3,7 +3,7 @@
     "username": "dev",
     "password": "dev",
     "database": "library",
-    "host": "postgres",
+    "host": "localhost",
     "dialect": "postgres",
     "operatorsAliases": false
   },
@@ -11,7 +11,7 @@
     "username": "dev",
     "password": "dev",
     "database": "library",
-    "host": "postgres",
+    "host": "localhost",
     "dialect": "postgres",
     "operatorsAliases": false
   },
@@ -19,7 +19,7 @@
     "username": "dev",
     "password": "dev",
     "database": "library",
-    "host": "postgres",
+    "host": "localhost",
     "dialect": "postgres",
     "operatorsAliases": false
   }

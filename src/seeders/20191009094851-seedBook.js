@@ -31,6 +31,20 @@ module.exports = {
       book_stock: 2,
       createdAt: new Date(),
       updatedAt: new Date(),
+    },
+    {
+      id: uuidv4(),
+      book_ISBN13: "978-2-08065-002-3",
+      book_ISBN10: "2080650025",
+      book_title: "Aventures au kalahari",
+      book_subtitle: "",
+      book_authors: ["Boller Freddy"],
+      book_editor: "Flammarion",
+      book_format: "Broché",
+      book_lang: "Français",
+      book_stock: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }], {});
 
     /*

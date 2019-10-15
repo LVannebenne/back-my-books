@@ -3,18 +3,14 @@ import { typeDef as User } from "./resolvers/user-resolvers";
 import { typeDef as Book } from "./resolvers/book-resolvers";
 import { typeDef as Borrow } from "./resolvers/borrow-resolvers";
 import { typeDef as Comment } from "./resolvers/comment-resolvers";
-
+import { typeDef as Opinion } from "./resolvers/opinion-resolvers";
+ 
 const typeDefs = gql(`
     ${User}
     ${Book}
     ${Borrow}
     ${Comment}
-    type Opinion {
-        id: ID
-        comment_id: ID
-        user_id: ID
-        opinion: Boolean
-    }
+    ${Opinion}
     type Query {
         getAllUsers(limit: Int): [User]
         getUser(id: ID): User
@@ -38,16 +34,16 @@ const typeDefs = gql(`
             book_subtitle: String,
             book_ISBN10: String,
             book_ISBN13: String,
-            book_authors: [String],
-            book_editor: String,
-            book_format: String,
-            book_lang: String,
-            book_cover: String,
-            book_stock: Int
+            book_authors: [String]!,
+            book_editor: String!,
+            book_format: String!,
+            book_lang: String!,
+            book_cover: String!,
+            book_stock: Int!
             ): Book
         createBorrow(
-            user_id: ID,
-            book_id: ID,
+            user_id: ID!,
+            book_id: ID!,
         ): Borrow
         createComment(
             user_id: ID!,
@@ -57,13 +53,13 @@ const typeDefs = gql(`
             comment_rating: Int!
         ): Comment
         deleteBook(
-            id: ID
+            id: ID!
         ): String
         deleteBorrow(
-            id: ID
+            id: ID!
         ): String
         deleteUser(
-            id: ID
+            id: ID!
         ): String
         giveOpinion(
             comment_id: ID!,

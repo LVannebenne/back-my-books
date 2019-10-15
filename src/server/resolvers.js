@@ -84,56 +84,96 @@ const resolvers = {
     },
     Mutation: {
         async createUser(root, args, { token, models }) {
-            const newUser = {
-                id: uuidv4(),
-                user_username: args.user_username,
-                user_email: args.user_email,
-                user_password: args.user_password,
-                user_role: 'user',
-                createdAt: new Date(),
-                updatedAt: new Date()
+            let doesExist = await models.user.findOne({
+                where: {
+                    [Op.or]:
+                        [{ user_username: args.user_username }, { user_email: args.user_email }]
+                }
+            });
+            if (doesExist) {
+                let error = [];
+                if (doesExist.user_email == args.user_email) {
+                    error.push('Email is already taken ');
+                }
+                if (doesExist.user_username == args.user_username) {
+                    error.push('Username is already taken ');
+                }
+                throw new Error(`Sorry ${error}`);
+            } else {
+                const newUser = {
+                    id: uuidv4(),
+                    user_username: args.user_username,
+                    user_email: args.user_email,
+                    user_password: args.user_password,
+                    user_role: 'user',
+                }
+                await models.user.create(newUser);
+                return newUser;
             }
-            await models.user.create(newUser);
-            return newUser;
+
         },
         async deleteUser(root, args, { token, models }) {
             await models.user.destroy({ where: { id: args.id } })
             return "Deleted user with id: " + args.id;
         },
         async createBook(root, args, { token, models }) {
-            const newBook = {
-                id: uuidv4(),
-                book_title: args.book_title,
-                book_subtitle: args.book_subtitle,
-                book_ISBN10: args.book_ISBN10,
-                book_ISBN13: args.book_ISBN13,
-                book_authors: args.book_authors,
-                book_editor: args.book_editor,
-                book_format: args.book_format,
-                book_lang: args.book_lang,
-                book_cover: args.book_cover,
-                book_stock: args.book_stock
+            let doesExist = await models.book.findOne({
+                where: {
+                    [Op.or]:
+                        [{ book_ISBN10: args.book_ISBN10 }, { book_ISBN13: args.book_ISBN13 }]
+                }
+            });
+            if (doesExist) {
+                let error = [];
+                if (doesExist.book_ISBN10 == args.book_ISBN10) {
+                    error.push(`ISBN10: ${doesExist.book_ISBN10} is already in the database `);
+                }
+                if (doesExist.book_ISBN13 == args.book_ISBN13) {
+                    error.push(`ISBN13: ${doesExist.book_ISBN13} is already in the database `);
+                }
+                throw new Error(`Sorry ${error}`);
+            } else {
+                const newBook = {
+                    id: uuidv4(),
+                    book_title: args.book_title,
+                    book_subtitle: args.book_subtitle,
+                    book_ISBN10: args.book_ISBN10,
+                    book_ISBN13: args.book_ISBN13,
+                    book_authors: args.book_authors,
+                    book_editor: args.book_editor,
+                    book_format: args.book_format,
+                    book_lang: args.book_lang,
+                    book_cover: args.book_cover,
+                    book_stock: args.book_stock
+                }
+                await models.book.create(newBook);
+                return newBook;
             }
-            await models.book.create(newBook);
-            return newBook;
+
         },
         async deleteBook(root, args, { token, models }) {
             await models.book.destroy({ where: { id: args.id } })
             return "Deleted book with id: " + args.id;
         },
         async createBorrow(root, args, { token, models }) {
-            let today = new Date();
-            let date_return = new Date();
-            date_return.setDate(today.getDate() + 30);
-            const newBorrow = {
-                id: uuidv4(),
-                user_id: args.user_id,
-                book_id: args.book_id,
-                date_borrowed: today.toUTCString(),
-                date_return: date_return
+            let borrowCount = await models.borrow.count({ where: { user_id: args.user_id } });
+            if (borrowCount < 5) {
+                let today = new Date();
+                let date_return = new Date();
+                date_return.setDate(today.getDate() + 30);
+                const newBorrow = {
+                    id: uuidv4(),
+                    user_id: args.user_id,
+                    book_id: args.book_id,
+                    date_borrowed: today,
+                    date_return: date_return
+                }
+                await models.borrow.create(newBorrow);
+                return newBorrow;
+            } else {
+                throw new Error("Maximal simultaneous loans is 5");
             }
-            await models.borrow.create(newBorrow);
-            return newBorrow;
+
         },
         async deleteBorrow(root, args, { token, models }) {
             await models.borrow.destroy({ where: { id: args.id } })

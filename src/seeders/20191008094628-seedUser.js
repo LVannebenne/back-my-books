@@ -8,7 +8,6 @@ module.exports = {
       user_username: "MyUsername",
       user_email: "MyEmail",
       user_password: "BadPassword",
-      user_role: "user",
       createdAt: new Date(),
       updatedAt: new Date(),
     },
@@ -17,7 +16,14 @@ module.exports = {
       user_username: "AnotherUser",
       user_email: "My@mail.com",
       user_password: "BadPasswordOR",
-      user_role: "user",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: uuidv4(),
+      user_username: "User03",
+      user_email: "user03@mail.com",
+      user_password: "BadPasswordOR",
       createdAt: new Date(),
       updatedAt: new Date(),
     }], {});
