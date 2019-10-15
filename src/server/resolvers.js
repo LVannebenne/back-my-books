@@ -1,6 +1,7 @@
 import uuidv4 from "uuid/v4";
 import { Op } from "sequelize";
 
+
 const resolvers = {
     Query: {
         async getAllUsers(root, args, { token, models }) {
@@ -75,7 +76,11 @@ const resolvers = {
         async getOpinions(root, args, { token, models }) {
             let opinions = await models.opinion.findAll({ where: { comment_id: args.comment_id }, include: ['user', 'comment'] });
             return opinions;
-        }
+        },
+        //     async login(root, args, { token, models }) {
+        //       const user = await models.users.findOne( { where: { users_username:  args.users_username && users_password:   args.users_username } );
+        //       return user;
+        //     }
     },
     Mutation: {
         async createUser(root, args, { token, models }) {
@@ -161,5 +166,3 @@ const resolvers = {
 
 
 module.exports = resolvers;
-
-

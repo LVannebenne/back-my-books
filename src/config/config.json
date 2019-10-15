@@ -3,7 +3,7 @@
     "username": "dev",
     "password": "dev",
     "database": "library",
-    "host": "localhost",
+    "host": "postgres",
     "dialect": "postgres",
     "operatorsAliases": false
   },
