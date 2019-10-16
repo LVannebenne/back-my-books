@@ -21,15 +21,26 @@ const resolvers = {
         },
         async getAllBorrows(root, args, { token, models }) {
             let borrows = await models.borrow.findAll({ limit: args.limit || 5, include: ['user', 'book'] });
-            /*for (let borrow of borrows) {
-                borrow.dataValues.user_id = models.user.findOne({ where: { id: borrow.user_id } });
-                borrow.dataValues.book_id = models.book.findOne({ where: { id: borrow.book_id } });
-            }*/
             return borrows;
         },
         async getBorrow(root, args, { token, models }) {
-            let borrow = await models.borrow.findOne({ where: { id: args.id } });
+            let borrow = await models.borrow.findOne({ where: { id: args.id }, include: ['user', 'book'] });
             return borrow;
+        },
+        async getLateBorrows(root, args, { token, models }) {
+            let today = new Date();
+            try {
+                let borrows = await models.borrow.findAll({
+                    where: {
+                        [Op.and]: [{ status: 'active' }, { date_return: { [Op.lte]: today } }]
+                    },
+                    include: ['user', 'book']
+                })
+                return borrows;
+            } catch (err) {
+                throw new Error(err);
+            }
+
         },
         async getAllComments(root, args, { token, models }) {
             const comments = await models.comment.findAll({ limit: args.limit || 5 });
@@ -112,6 +123,49 @@ const resolvers = {
             }
 
         },
+        async updateUsername(root, args, { token, models }) {
+            let user = await models.user.update(
+                { user_username: args.user_username },
+                {
+                    returning: true, where: { id: args.id }
+                }
+            );
+            return [...user][1][0];
+        },
+        async updatePassword(root, args, { token, models }) {
+            let user = await models.user.update(
+                { user_password: args.user_password },
+                {
+                    returning: true, where: { id: args.id }
+                }
+            );
+            return [...user][1][0];
+        },
+        async updateEmail(root, args, { token, models }) {
+            let user = await models.user.update(
+                { user_email: args.user_email },
+                {
+                    returning: true, where: { id: args.id }
+                }
+            );
+            return [...user][1][0];
+        },
+        async toggleUserRole(root, args, { token, models }) {
+            let user = await models.user.findOne({ where: { id: args.id } })
+            let willBe = "";
+            if (user.dataValues.user_role == 'user') {
+                willBe  = 'admin';
+            } else {
+                willBe  = 'user';
+            }
+            let userUpdate = await models.user.update(
+                { user_role: willBe },
+                {
+                    returning: true, where: { id: args.id }
+                }
+            );
+            return [...userUpdate][1][0];
+        },
         async deleteUser(root, args, { token, models }) {
             await models.user.destroy({ where: { id: args.id } })
             return "Deleted user with id: " + args.id;
@@ -156,30 +210,62 @@ const resolvers = {
             return "Deleted book with id: " + args.id;
         },
         async createBorrow(root, args, { token, models }) {
-            let borrowCount = await models.borrow.count({ where: { user_id: args.user_id } });
-            if (borrowCount < 5) {
-                let today = new Date();
-                let date_return = new Date();
-                date_return.setDate(today.getDate() + 30);
-                const newBorrow = {
-                    id: uuidv4(),
-                    user_id: args.user_id,
-                    book_id: args.book_id,
-                    date_borrowed: today,
-                    date_return: date_return
+            let today = new Date();
+            let date_return = new Date();
+            date_return.setDate(today.getDate() + 30);
+            let borrowCount = await models.borrow.count({
+                where: {
+                    [Op.and]: [{ user_id: args.user_id }, { status: 'active' }]
                 }
-                await models.borrow.create(newBorrow);
-                return newBorrow;
-            } else {
-                throw new Error("Maximal simultaneous loans is 5");
+            });
+            let lateReturn = async () => {
+                let found = await models.borrow.findAll({
+                    where: {
+                        [Op.and]: [
+                            { user_id: args.user_id },
+                            { status: 'active' },
+                            { date_return: { [Op.lt]: today } }
+                        ]
+                    }
+                });
+                if (found.length >= 0) {
+                    console.log('Aucun retard');
+                    if (borrowCount < 5) {
+                        const newBorrow = {
+                            id: uuidv4(),
+                            user_id: args.user_id,
+                            book_id: args.book_id,
+                            date_borrowed: today,
+                            date_return: date_return
+                        }
+                        await models.borrow.create(newBorrow);
+                        return newBorrow;
+                    } else {
+                        throw new Error("Maximal simultaneous loans is 5");
+                    }
+                } else {
+                    throw new Error(`Loans non-returned found for user: ${args.user_id}`);
+                }
             }
-
+            lateReturn();
         },
         async deleteBorrow(root, args, { token, models }) {
             await models.borrow.destroy({ where: { id: args.id } })
             return "Deleted borrow with id: " + args.id;
         },
         async createComment(root, args, { token, models }) {
+            let doesExist = await models.comment.findOne({
+                where: {
+                    [Op.and]: [{ user_id: args.user_id }, { book_id: args.book_id }]
+                }
+            })
+            if (doesExist) {
+                let error = [];
+                if (doesExist.user_id == args.user_id || doesExist.book_id == args.book_id) {
+                    error.push(`User ${doesExist.user_id} has already write a comment on ${doesExist.book_id}.`);
+                    throw new Error(`Sorry ${error}`);
+                }
+            }
             const newComment = {
                 id: uuidv4(),
                 user_id: args.user_id,
@@ -191,18 +277,60 @@ const resolvers = {
             await models.comment.create(newComment);
             return newComment;
         },
-        async giveOpinion(root, args, { token, models }) {
-            const newOpinion = {
-                id: uuidv4(),
-                comment_id: args.comment_id,
-                user_id: args.user_id,
-                opinion: args.opinion,
+        async deleteComment(root, args, { token, models }) {
+            try {
+                await models.comment.destroy({ where: { id: args.id } })
+                return "Deleted comment with id: " + args.id;
+            } catch (err) {
+                throw new Error(err);
             }
-            await models.opinion.create(newOpinion);
-            return newOpinion;
+
+        },
+        async giveOpinion(root, args, { token, models }) {
+            let doesExist = await models.opinion.findOne({
+                where: {
+                    [Op.and]: [{ user_id: args.user_id }, { comment_id: args.comment_id }]
+                }
+            })
+            if (doesExist) {
+                let error = [];
+                if (doesExist.user_id == args.user_id || doesExist.comment_id == args.comment_id) {
+                    error.push(`User ${doesExist.user_id} has already give it's opinion on ${doesExist.comment_id}.`);
+                    throw new Error(`Sorry ${error}`);
+                }
+
+            } else {
+                const newOpinion = {
+                    id: uuidv4(),
+                    comment_id: args.comment_id,
+                    user_id: args.user_id,
+                    opinion: args.opinion,
+                }
+                await models.opinion.create(newOpinion);
+                return newOpinion;
+            }
+        },
+        async bookReturn(root, args, { token, models }) {
+            let doesExist = await models.borrow.findOne({
+                where: {
+                    [Op.and]: [{ id: args.id }, { status: 'active' }]
+                }
+            })
+            if (doesExist) {
+                let update = await models.borrow.update({
+                    status: 'returned'
+                }, {
+                    returning: true, where: { id: args.id }
+                });
+                return [...update][1][0];
+            } else {
+                throw new Error(`No active borrow found with this id: ${args.id}`);
+            }
         }
     }
 }
+
+
 
 
 module.exports = resolvers;

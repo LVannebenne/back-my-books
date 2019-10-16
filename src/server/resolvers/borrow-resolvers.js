@@ -9,5 +9,6 @@ export const typeDef = `
         date_return: String
         user: User
         book: Book
+        status: String
     }
 `;

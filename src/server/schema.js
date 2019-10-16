@@ -22,6 +22,7 @@ const typeDefs = gql(`
         getCommentsByBook(book_id: ID): [Comment]
         getCommentsByUser(user_id: ID): [Comment]
         getOpinions(comment_id: ID): [Opinion]
+        getLateBorrows: [Borrow]
     }
     type Mutation {
         createUser(
@@ -61,11 +62,32 @@ const typeDefs = gql(`
         deleteUser(
             id: ID!
         ): String
+        deleteComment(
+            id: ID!
+        ): String
         giveOpinion(
             comment_id: ID!,
             user_id: ID!,
             opinion: Boolean!
         ): Opinion
+        bookReturn(
+            id: ID!
+        ): Borrow
+        updateUsername(
+            id: ID!,
+            user_username: String!
+        ): User
+        updatePassword(
+            id: ID!,
+            user_password: String!
+        ): User
+        updateEmail(
+            id: ID!,
+            user_email: String!
+        ): User
+        toggleUserRole(
+            id: ID!
+        ): User
     }
 `);
 

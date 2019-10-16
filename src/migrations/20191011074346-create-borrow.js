@@ -31,6 +31,10 @@ module.exports = {
       },
       date_return: {
         type: Sequelize.DATE
+      },
+      status: {
+        type: Sequelize.STRING,
+        defaultValue: 'active',
       }
     });
   },

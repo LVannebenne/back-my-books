@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     date_borrowed: DataTypes.DATE,
     date_return: DataTypes.DATE,
+    status: DataTypes.STRING,
   }, {
     timestamps: false,
   });
