@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "yvckucxsercqmb",
+    "password": "782784f9d207fcbef72bcd5acf805d9378e2e2750dc3fa3c98f21be26bc2aead",
+    "database": "d7te4l4j16m2pu",
+    "host": "ec2-54-228-246-214.eu-west-1.compute.amazonaws.com",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "dev",
+    "password": "dev",
+    "database": "library",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "dev",
+    "password": "dev",
+    "database": "library",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  }
+}

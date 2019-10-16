@@ -4,7 +4,7 @@
   "description": "",
   "main": "bin/server/index.js",
   "scripts": {
-    "start": "npm build:server && node /bin/server/index.js",
+    "start": "node /bin/server/index.js",
     "work:server": "babel -w src --out-dir bin",
     "build:server": "babel src --out-dir bin",
     "test": "echo \"Error: no test specified\" && exit 1"
