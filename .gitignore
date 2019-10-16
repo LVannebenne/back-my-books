@@ -36,6 +36,8 @@ build/Release
 node_modules/
 jspm_packages/
 bin/
+docker-compose.yml
+docker-compose copy.yml
 
 # TypeScript v1 declaration files
 typings/
