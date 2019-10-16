@@ -26,6 +26,7 @@ const server = new ApolloServer({
       models
     };
   },
+  playground: true,
 });
 const app = express();
 
