@@ -29,7 +29,9 @@ const server = new _apolloServerExpress.ApolloServer({
       token,
       models: _models.default
     };
-  }
+  },
+  introspection: true,
+  playground: true
 });
 const app = (0, _express.default)();
 app.get('/', (req, res) => {
