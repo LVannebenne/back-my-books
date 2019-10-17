@@ -49,6 +49,9 @@ app.get('/login', (req, res) => {
   res.send(`
   <p>token user : </p><textarea>${usertoken}</textarea><br />
   <p>token admin : </p><textarea>${admintoken}</textarea><br />
+  <img class="playground"
+     src="playground.png"
+     alt="playground">
   `)
 });
 
