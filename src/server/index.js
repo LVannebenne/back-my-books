@@ -33,7 +33,9 @@ const app = express();
 
 app.get('/', (req, res) => {
   console.log(req.headers);
-  res.send("hello");
+  // res.send("hello");
+  res.sendFile(path.join(__dirname+'/front.html'));
+  //__dirname : It will resolve to your project folder.
 });
 // let TestUser = {
 //   username: "pipil",
