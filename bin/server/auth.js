@@ -14,7 +14,7 @@ function auth(request, token, role) {
     if (role.includes(decode.role) || role == "all") {
       return decode;
     } else {
-      throw new Error("unauthorised for " + decode.role);
+      throw new Error("Unauthorised for " + decode.role);
     }
   } else {
     throw new Error('Please log in ');

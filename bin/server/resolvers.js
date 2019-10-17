@@ -25,6 +25,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin"]);
       const user = await models.user.findOne({
         where: {
           id: args.id
@@ -58,6 +59,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin"]);
       let borrows = await models.borrow.findAll({
         limit: args.limit || 5,
         include: ['user', 'book']
@@ -69,6 +71,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin"]);
       let borrow = await models.borrow.findOne({
         where: {
           id: args.id
@@ -82,6 +85,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin"]);
       let today = new Date();
 
       try {
@@ -107,6 +111,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, "all");
       const comments = await models.comment.findAll({
         limit: args.limit || 5
       });
@@ -117,6 +122,8 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, "all");
+
       try {
         let comments = await models.comment.findAll({
           where: {
@@ -148,7 +155,6 @@ const resolvers = {
 
         return comments;
       } catch (err) {
-        console.log(err);
         throw new Error(err);
       }
     },
@@ -157,6 +163,8 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, "all");
+
       try {
         let comments = await models.comment.findAll({
           where: {
@@ -188,7 +196,6 @@ const resolvers = {
 
         return comments;
       } catch (err) {
-        console.log(err);
         throw new Error(err);
       }
     },
@@ -197,6 +204,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, "all");
       let opinions = await models.opinion.findAll({
         where: {
           comment_id: args.comment_id
@@ -216,6 +224,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, "all");
       let doesExist = await models.user.findOne({
         where: {
           [_sequelize.Op.or]: [{
@@ -255,6 +264,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin", "user"]);
       let user = await models.user.update({
         user_username: args.user_username
       }, {
@@ -270,6 +280,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin", "user"]);
       let user = await models.user.update({
         user_password: args.user_password
       }, {
@@ -285,6 +296,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin", "user"]);
       let user = await models.user.update({
         user_email: args.user_email
       }, {
@@ -300,6 +312,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin"]);
       let user = await models.user.findOne({
         where: {
           id: args.id
@@ -328,6 +341,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin"]);
       await models.user.destroy({
         where: {
           id: args.id
@@ -340,6 +354,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin"]);
       let doesExist = await models.book.findOne({
         where: {
           [_sequelize.Op.or]: [{
@@ -385,6 +400,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin"]);
       await models.book.destroy({
         where: {
           id: args.id
@@ -397,6 +413,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin"]);
       let today = new Date();
       let date_return = new Date();
       date_return.setDate(today.getDate() + 30);
@@ -426,8 +443,6 @@ const resolvers = {
         });
 
         if (found.length >= 0) {
-          console.log('Aucun retard');
-
           if (borrowCount < 5) {
             const newBorrow = {
               id: (0, _v.default)(),
@@ -453,6 +468,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin"]);
       await models.borrow.destroy({
         where: {
           id: args.id
@@ -465,6 +481,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin", "user"]);
       let doesExist = await models.comment.findOne({
         where: {
           [_sequelize.Op.and]: [{
@@ -500,6 +517,8 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin", "user"]);
+
       try {
         await models.comment.destroy({
           where: {
@@ -516,6 +535,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin", "user"]);
       let doesExist = await models.opinion.findOne({
         where: {
           [_sequelize.Op.and]: [{
@@ -549,6 +569,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin"]);
       let doesExist = await models.borrow.findOne({
         where: {
           [_sequelize.Op.and]: [{
