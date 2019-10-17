@@ -9,6 +9,9 @@ module.exports = {
       users_username: "MyUsername",
       users_email: "MyEmail",
       users_password: "BadPassword",
+<<<<<<< HEAD
+      users_role: "user",
+=======
       users_role: "users",
       createdAt: new Date(),
       updatedAt: new Date()
@@ -18,6 +21,7 @@ module.exports = {
       users_email: "My@mail.com",
       users_password: "BadPasswordOR",
       users_role: "users",
+>>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

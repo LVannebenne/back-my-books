@@ -2,8 +2,11 @@
 
 var _v = _interopRequireDefault(require("uuid/v4"));
 
+<<<<<<< HEAD
+=======
 var _sequelize = require("sequelize");
 
+>>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const resolvers = {
@@ -12,7 +15,11 @@ const resolvers = {
       req,
       models
     }) {
+<<<<<<< HEAD
+      const users = await models.users.findAll({
+=======
       const users = await models.user.findAll({
+>>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
         limit: args.limit || 5
       });
       return users;
@@ -22,7 +29,11 @@ const resolvers = {
       req,
       models
     }) {
+<<<<<<< HEAD
+      const user = await models.users.findOne({
+=======
       const user = await models.user.findOne({
+>>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
         where: {
           id: args.id
         }
@@ -30,6 +41,13 @@ const resolvers = {
       return user;
     },
 
+<<<<<<< HEAD
+    async getAllBooks(root, arg, {
+      token,
+      models
+    }) {
+      return await models.book.findAll();
+=======
     async getAllBooks(root, args, {
       req,
       models
@@ -38,6 +56,7 @@ const resolvers = {
       return await models.book.findAll({
         limit: args.limit || 5
       });
+>>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
     },
 
     async getBook(root, args, {
@@ -55,6 +74,37 @@ const resolvers = {
       req,
       models
     }) {
+<<<<<<< HEAD
+      let borrows = await models.borrow.findAll();
+
+      for (let borrow of borrows) {
+        borrow.dataValues.users_id = models.users.findOne({
+          where: {
+            id: borrow.users_id
+          }
+        });
+        borrow.dataValues.book_id = models.book.findOne({
+          where: {
+            id: borrow.book_id
+          }
+        });
+      }
+
+      return borrows;
+    },
+
+    async getBorrow(root, args, {
+      token,
+      models
+    }) {
+      let borrow = await models.borrow.findOne({
+        where: {
+          id: args.id
+        }
+      });
+      return borrow;
+    }
+=======
       let borrows = await models.borrow.findAll({
         limit: args.limit || 5,
         include: ['user', 'book']
@@ -206,6 +256,7 @@ const resolvers = {
     //       return user;
     //     }
 
+>>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
 
   },
   Mutation: {
@@ -213,6 +264,19 @@ const resolvers = {
       req,
       models
     }) {
+<<<<<<< HEAD
+      const newUser = {
+        id: (0, _v.default)(),
+        users_username: args.users_username,
+        users_email: args.users_email,
+        users_password: args.users_password,
+        users_role: 'users',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      await models.users.create(newUser);
+      return newUser;
+=======
       let doesExist = await models.user.findOne({
         where: {
           [_sequelize.Op.or]: [{
@@ -319,13 +383,18 @@ const resolvers = {
         }
       });
       return [...userUpdate][1][0];
+>>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
     },
 
     async deleteUser(root, args, {
       req,
       models
     }) {
+<<<<<<< HEAD
+      await models.users.destroy({
+=======
       await models.user.destroy({
+>>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
         where: {
           id: args.id
         }
@@ -337,6 +406,23 @@ const resolvers = {
       req,
       models
     }) {
+<<<<<<< HEAD
+      const newBook = {
+        id: (0, _v.default)(),
+        book_title: args.book_title,
+        book_subtitle: args.book_subtitle,
+        book_ISBN10: args.book_ISBN10,
+        book_ISBN13: args.book_ISBN13,
+        book_authors: args.book_authors,
+        book_editor: args.book_editor,
+        book_format: args.book_format,
+        book_lang: args.book_lang,
+        book_cover: args.book_cover,
+        book_stock: args.book_stock
+      };
+      await models.book.create(newBook);
+      return newBook;
+=======
       let doesExist = await models.book.findOne({
         where: {
           [_sequelize.Op.or]: [{
@@ -376,6 +462,7 @@ const resolvers = {
         await models.book.create(newBook);
         return newBook;
       }
+>>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
     },
 
     async deleteBook(root, args, {
@@ -397,6 +484,17 @@ const resolvers = {
       let today = new Date();
       let date_return = new Date();
       date_return.setDate(today.getDate() + 30);
+<<<<<<< HEAD
+      const newBorrow = {
+        id: (0, _v.default)(),
+        users_id: args.users_id,
+        book_id: args.book_id,
+        date_borrowed: today.toUTCString(),
+        date_return: date_return
+      };
+      await models.borrow.create(newBorrow);
+      return newBorrow;
+=======
       let borrowCount = await models.borrow.count({
         where: {
           [_sequelize.Op.and]: [{
@@ -444,6 +542,7 @@ const resolvers = {
       };
 
       lateReturn();
+>>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
     },
 
     async deleteBorrow(root, args, {
@@ -456,6 +555,8 @@ const resolvers = {
         }
       });
       return "Deleted borrow with id: " + args.id;
+<<<<<<< HEAD
+=======
     },
 
     async createComment(root, args, {
@@ -569,6 +670,7 @@ const resolvers = {
       } else {
         throw new Error(`No active borrow found with this id: ${args.id}`);
       }
+>>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
     }
 
   }
