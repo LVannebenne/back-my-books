@@ -20,7 +20,9 @@ Some guy called Jeff asked us for a library manager for his books, so we did it!
 * Babel (Transpiler)
 * Apollo-Server && Apollo Client
 
- *Playground* (query testing) is [here](https://back-my-books-project.herokuapp.com/explore)
+ *Playground* (query testing) is [here](https://back-my-books-project.herokuapp.com/explore).
+ 
+ If you want to query the *Playground* with some authentication, you can get it from [here](https://back-my-books-project.herokuapp.com/login).
 
 ## How to use Sequelize-CLI : 
 `npm run build:server`
