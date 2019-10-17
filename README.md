@@ -1,9 +1,17 @@
-preview : https://back-my-books-project.herokuapp.com/
 
-# back-my-books
 
-Back-end - Library manager
 
+
+# Back my books 📓
+
+Our last (but not least) Becode Project !
+
+Some guy called Jeff asked us for a library manager for his books, so we did it!
+
+*With GraphQL* 
+
+[Our demo website](https://back-my-books-project.herokuapp.com/)
+(On Heroku)
 ## Stack Technique 
 
 * Node.js (Server)
@@ -12,33 +20,40 @@ Back-end - Library manager
 * Babel (Transpiler)
 * Apollo-Server && Apollo Client
 
-Le *Playground* (query testing) est acessible via la route /explore et nécessite un token. La doc complète des schémas y est reprise.
+ *Playground* (query testing) is [here](https://back-my-books-project.herokuapp.com/explore).
+ 
+ If you want to query the *Playground* with some authentication, you can get it from [here](https://back-my-books-project.herokuapp.com/login).
 
-## Utilisation de sequelize-cli
+## How to use Sequelize-CLI : 
+`npm run build:server`
 
-Dans le dossier SRC du project:
+In the  `src/` folder : 
 
-*Si besoin* : Copier le dossier config de /src dans /bin (sinon avec un npm run build une première fois)
+`npm install --save-dev sequelize-cli`
 
-1. Remplir le config.json du dossier bin avec les infos de connexion a la db.
 
-2. Utiliser les commandes suivante depuis le dossier /src
 
-**Sequelize db:create** => Crée la db "library"
-**Sequelize db:migrate** => Crée les tables (
+1. Fill the `bin/config/config.json` with the database credentials.
+
+2. in the `src/` folder : 
+
+`npx sequelize db:create`  - Creates the database
+`sequelize db:migrate` -  Creates the following tables : 
     * books
     * borrows
     * comments
     * opinions
     * users
-) depuis les modèles homonymes (noms au singulier)
+    
+**Note :**  *Tables names are **plural***
 
-**Sequelize db:seed** => Optionnel, remplit les tables sans dépendances (users et books) de quelques ittems(3).
+`Sequelize db:seed` -  Optional, fills the tables with 3 books and their info. 
 
 
-### Tables => modèles
 
-La liste des champs, leur type, ainsi que les réfèrences (relations) sont visibles dans le dossier /models
+### Tables and models : 
+
+The entries in the database, type and references *(relations)* are in the  `/models` folder
 
     * books => book
     * borrows => borrow
@@ -46,49 +61,66 @@ La liste des champs, leur type, ainsi que les réfèrences (relations) sont visi
     * opinions => opinion
     * users => user
 
-### Query 
+## Queries
 
-Toutes les query en getAll...() comporte une limite par défaut de 5 résultats. Il est possible de passer une autre valeur en paramètre.
+All the queries, with a `getAll...` will, by *default* render 5 books.
 
-Par exemple: 
+However, you can pass the _limit_ parameter : 
+
+e.g : 
 
     getAllUsers(limit: 10) {...}
 
-Plus d'informations sur les query disponibles dans le playground.
+**More informations about our API is in the *Playground***
  
-### Vérifications Mutations
+### Mutations (*Queries that change stuff* ) : 
 
 #### Books
 
     createBook()
 
-Une erreur est lancée si on tente d'entrer un livre avec un ISBN existant dans la DB (ISBN10 ou ISBN13).
+An error will occur if the ISBN (10 or 13) exists in the database
 
 #### Borrows
 
     createBorrow()
 
-Une erreur est lancée si un utilisateur à déja plus de 5 livres empruntés en simultané.
+An error will occur if a user already borrowed 5 books
+*we know we have plenty books, but hey, bring back the 5 others, please*
 
     bookReturn()
 
-Une erreur est lancée si aucun prêt actif n'est trouvé.
+An error will occur if the user tries to give back a book that he never borrowed. 
+*maybe he stole it ?*
 
 #### Comments
 
     createComment()
 
-Une erreur est lancée si l'utilisateur à déja posté un commentaire sur le livre
+An error will occur if the user already gave his opinion on the book. 
+*No need for bloat in the comment section* 
 
 #### Opinions
 
     giveOpinion()
 
-Une erreur est lancée si l'utilisateur à déja "donné son opinion" sur un commentaire
+An error will occur if the user tries to reply more than once on a comment 
+*No need for drama in the comment section* 
 
 #### Users
 
     createUser()
 
-Une erreur est lancée si le nom d'utilisateur ou l'email ont déja été enregistrés
+An error will occur if a user's username **or** email are in the database. 
+
+**For _obvious_ reasons**  
+
+### Have fun !
+
+``` 
+🦄   Lindsay Vannebenne
+🕶  Michael Jacquemart
+🔭  Victor Philippe
+```
+
 
