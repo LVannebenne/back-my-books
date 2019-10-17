@@ -6,22 +6,23 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('users', [{
       id: uuidv4(),
-      users_username: "MyUsername",
-      users_email: "MyEmail",
-      users_password: "BadPassword",
-<<<<<<< HEAD
-      users_role: "user",
-=======
-      users_role: "users",
+      user_username: "MyUsername",
+      user_email: "MyEmail",
+      user_password: "BadPassword",
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
       id: uuidv4(),
-      users_username: "AnotherUser",
-      users_email: "My@mail.com",
-      users_password: "BadPasswordOR",
-      users_role: "users",
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
+      user_username: "AnotherUser",
+      user_email: "My@mail.com",
+      user_password: "BadPasswordOR",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      id: uuidv4(),
+      user_username: "User03",
+      user_email: "user03@mail.com",
+      user_password: "BadPasswordOR",
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

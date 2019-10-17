@@ -1,26 +1,17 @@
 'use strict';
 
-<<<<<<< HEAD
-=======
 const uuidv4 = require("uuid/v4");
 
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('borrows', {
+    return queryInterface.createTable('comments', {
       id: {
         allowNull: false,
         primaryKey: true,
-<<<<<<< HEAD
-        type: Sequelize.UUID
-      },
-      users_id: {
-=======
         type: Sequelize.UUID,
         defaultValue: uuidv4()
       },
       user_id: {
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
         type: Sequelize.UUID,
         allowNull: false,
         references: {
@@ -36,22 +27,26 @@ module.exports = {
           key: 'id'
         }
       },
-      date_borrowed: {
+      comment_title: {
+        type: Sequelize.STRING
+      },
+      comment_content: {
+        type: Sequelize.STRING
+      },
+      comment_rating: {
+        type: Sequelize.INTEGER
+      },
+      createdAt: {
+        allowNull: false,
         type: Sequelize.DATE
       },
-      date_return: {
+      updatedAt: {
+        allowNull: false,
         type: Sequelize.DATE
-<<<<<<< HEAD
-=======
-      },
-      status: {
-        type: Sequelize.STRING,
-        defaultValue: 'active'
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('borrows');
+    return queryInterface.dropTable('comments');
   }
 };

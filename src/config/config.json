@@ -1,16 +1,9 @@
 {
   "development": {
-<<<<<<< HEAD
-    "username": "dev",
-    "password": "dev",
-    "database": "library",
-    "host": "localhost",
-=======
     "username": "iswgcphy",
     "password": "UFyyeXIThPtMDWwWauRnje1HFb2-hLxa",
     "database": "iswgcphy",
     "host": "manny.db.elephantsql.com",
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
     "dialect": "postgres",
     "operatorsAliases": false
   },
@@ -23,17 +16,10 @@
     "operatorsAliases": false
   },
   "production": {
-<<<<<<< HEAD
-    "username": "dev",
-    "password": "dev",
-    "database": "library",
-    "host": "localhost",
-=======
     "username": "iswgcphy",
     "password": "UFyyeXIThPtMDWwWauRnje1HFb2-hLxa",
     "database": "iswgcphy",
     "host": "manny.db.elephantsql.com",
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
     "dialect": "postgres",
     "operatorsAliases": false
   }

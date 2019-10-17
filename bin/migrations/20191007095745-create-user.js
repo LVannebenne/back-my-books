@@ -1,10 +1,7 @@
 'use strict';
 
-<<<<<<< HEAD
-=======
 const uuidv4 = require("uuid/v4");
 
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('users', {
@@ -12,28 +9,27 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-<<<<<<< HEAD
-        defaultValue: Sequelize.UUIDV4
-=======
         defaultValue: uuidv4()
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
       },
-      users_username: {
+      user_username: {
         type: Sequelize.STRING
       },
-      users_email: {
+      user_email: {
         type: Sequelize.STRING
       },
-      users_password: {
+      user_password: {
         type: Sequelize.STRING
       },
-      users_role: {
-        type: Sequelize.STRING
+      user_role: {
+        type: Sequelize.STRING,
+        defaultValue: 'user'
       },
       createdAt: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
+        allowNull: false,
         type: Sequelize.DATE
       }
     });
