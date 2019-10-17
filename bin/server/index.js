@@ -35,8 +35,8 @@ const server = new _apolloServerExpress.ApolloServer({
 });
 const app = (0, _express.default)();
 app.get('/', (req, res) => {
-  console.log(req.headers);
-  res.send("hello");
+  //console.log(req.headers);
+  res.sendFile(__dirname + "/front.html");
 }); // let TestUser = {
 //   username: "pipil",
 //   password: "pol"
@@ -44,15 +44,14 @@ app.get('/', (req, res) => {
 
 app.get('/login', (req, res) => {
   // TestUser.logged = false;
-  console.log(req.headers);
-  console.log("this is the auth");
-
+  //console.log(req.headers)
   var token = _jsonwebtoken.default.sign({
-    thisisthepayload: 'charchutil'
+    role: 'user'
   }, process.env.SECRET, {
     algorithm: 'HS256'
   });
 
+  res.send(`token user : ${token}`);
   console.log(token); // jwt.sign({
   //   payload: 'freeeze!'
   // }, privateKey, {

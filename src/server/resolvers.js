@@ -1,10 +1,12 @@
 import uuidv4 from "uuid/v4";
 import { Op } from "sequelize";
+import auth from "./auth";
 
 
 const resolvers = {
     Query: {
         async getAllUsers(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin","user"])
             const users = await models.user.findAll({ limit: args.limit || 5 });
             return users;
         },
@@ -13,7 +15,7 @@ const resolvers = {
             return user;
         },
         async getAllBooks(root, args, { req, models }) {
-            console.log(req);
+            auth(req, process.env.SECRET, "all")
             return await models.book.findAll({ limit: args.limit || 5 });
         },
         async getBook(root, args, { req, models }) {

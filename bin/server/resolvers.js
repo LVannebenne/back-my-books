@@ -4,6 +4,8 @@ var _v = _interopRequireDefault(require("uuid/v4"));
 
 var _sequelize = require("sequelize");
 
+var _auth = _interopRequireDefault(require("./auth"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const resolvers = {
@@ -12,6 +14,7 @@ const resolvers = {
       req,
       models
     }) {
+      (0, _auth.default)(req, process.env.SECRET, ["admin", "user"]);
       const users = await models.user.findAll({
         limit: args.limit || 5
       });
@@ -34,7 +37,7 @@ const resolvers = {
       req,
       models
     }) {
-      console.log(req);
+      (0, _auth.default)(req, process.env.SECRET, "all");
       return await models.book.findAll({
         limit: args.limit || 5
       });

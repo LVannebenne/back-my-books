@@ -1,7 +1,6 @@
 import express from "express";
 import {
-  ApolloServer,
-  gql
+  ApolloServer
 } from 'apollo-server-express';
 import typeDefs from "./schema";
 import resolvers from "./resolvers";
@@ -32,8 +31,8 @@ const server = new ApolloServer({
 const app = express();
 
 app.get('/', (req, res) => {
-  console.log(req.headers);
-  res.send("hello");
+  //console.log(req.headers);
+  res.sendFile(__dirname + "/front.html");
 });
 // let TestUser = {
 //   username: "pipil",
@@ -41,13 +40,13 @@ app.get('/', (req, res) => {
 // }
 app.get('/login', (req, res) => {
   // TestUser.logged = false;
-  console.log(req.headers)
-  console.log("this is the auth")
+  //console.log(req.headers)
   var token = jwt.sign({
-    thisisthepayload: 'charchutil'
-  }, process.env.SECRET , {
+    role: 'user'
+  }, process.env.SECRET, {
     algorithm: 'HS256'
   });
+  res.send(`token user : ${token}`)
   console.log(token)
   // jwt.sign({
   //   payload: 'freeeze!'
@@ -66,9 +65,9 @@ app.get('/login', (req, res) => {
 });
 
 // if (TestUser.logged == true) {
-  app.post('/login', (req, res) => {
-    res.send(`<p>It Works</p>`);
-  });
+app.post('/login', (req, res) => {
+  res.send(`<p>It Works</p>`);
+});
 // }
 server.applyMiddleware({
   app,
