@@ -1,6 +1,7 @@
 
 
 
+
 # Back my books 📓
 
 Our last (but not least) Becode Project !
@@ -22,7 +23,7 @@ Some guy called Jeff asked us for a library manager for his books, so we did it!
  *Playground* (query testing) is [here](https://back-my-books-project.herokuapp.com/explore)
 
 ## How to use Sequelize-CLI : 
-`npm run build`
+`npm run build:server`
 
 In the  `src/` folder : 
 
@@ -30,19 +31,19 @@ In the  `src/` folder :
 
 
 
-1. Fill the `bin/config.json` with the database credentials.
+1. Fill the `bin/config/config.json` with the database credentials.
 
 2. in the `src/` folder : 
 
-a.`npx sequelize db:create`  - Creates the database
-b.`sequelize db:migrate` -  Creates the following tables : 
+`npx sequelize db:create`  - Creates the database
+`sequelize db:migrate` -  Creates the following tables : 
     * books
     * borrows
     * comments
     * opinions
     * users
     
-**Note :**  *Tables names are not plural*
+**Note :**  *Tables names are **plural***
 
 `Sequelize db:seed` -  Optional, fills the tables with 3 books and their info. 
 
@@ -50,7 +51,7 @@ b.`sequelize db:migrate` -  Creates the following tables :
 
 ### Tables and models : 
 
-The entries in the database, type and references (relations) are in the  `/models` folder
+The entries in the database, type and references *(relations)* are in the  `/models` folder
 
     * books => book
     * borrows => borrow
@@ -113,3 +114,11 @@ An error will occur if a user's username **or** email are in the database.
 **For _obvious_ reasons**  
 
 ### Have fun !
+
+``` 
+🦄   Lindsay Vannebenne
+🕶  Michael Jacquemart
+🔭  Victor Philippe
+```
+
+
