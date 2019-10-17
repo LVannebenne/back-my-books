@@ -11,6 +11,7 @@ const resolvers = {
             return users;
         },
         async getUser(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin"])
             const user = await models.user.findOne({ where: { id: args.id } });
             return user;
         },
@@ -23,14 +24,17 @@ const resolvers = {
 
         },
         async getAllBorrows(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin"])
             let borrows = await models.borrow.findAll({ limit: args.limit || 5, include: ['user', 'book'] });
             return borrows;
         },
         async getBorrow(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin"])
             let borrow = await models.borrow.findOne({ where: { id: args.id }, include: ['user', 'book'] });
             return borrow;
         },
         async getLateBorrows(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin"])
             let today = new Date();
             try {
                 let borrows = await models.borrow.findAll({
@@ -46,10 +50,12 @@ const resolvers = {
 
         },
         async getAllComments(root, args, { req, models }) {
+            auth(req, process.env.SECRET, "all")
             const comments = await models.comment.findAll({ limit: args.limit || 5 });
             return comments;
         },
         async getCommentsByBook(root, args, { req, models }) {
+            auth(req, process.env.SECRET, "all")
             try {
                 let comments = await models.comment.findAll({ where: { book_id: args.book_id }, include: ['user', 'book'] });
                 for await (let comment of comments) {
@@ -66,9 +72,10 @@ const resolvers = {
                 }
                 return comments;
             }
-            catch (err) { console.log(err); throw new Error(err) }
+            catch (err) { throw new Error(err) }
         },
         async getCommentsByUser(root, args, { req, models }) {
+            auth(req, process.env.SECRET, "all")
             try {
                 let comments = await models.comment.findAll({ where: { user_id: args.user_id }, include: ['user', 'book'] });
                 for await (let comment of comments) {
@@ -85,9 +92,10 @@ const resolvers = {
                 }
                 return comments;
             }
-            catch (err) { console.log(err); throw new Error(err) }
+            catch (err) { throw new Error(err) }
         },
         async getOpinions(root, args, { req, models }) {
+            auth(req, process.env.SECRET, "all")
             let opinions = await models.opinion.findAll({ where: { comment_id: args.comment_id }, include: ['user', 'comment'] });
             return opinions;
         },
@@ -98,6 +106,7 @@ const resolvers = {
     },
     Mutation: {
         async createUser(root, args, { req, models }) {
+            auth(req, process.env.SECRET, "all")
             let doesExist = await models.user.findOne({
                 where: {
                     [Op.or]:
@@ -127,6 +136,7 @@ const resolvers = {
 
         },
         async updateUsername(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin","user"])
             let user = await models.user.update(
                 { user_username: args.user_username },
                 {
@@ -136,6 +146,7 @@ const resolvers = {
             return [...user][1][0];
         },
         async updatePassword(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin","user"])
             let user = await models.user.update(
                 { user_password: args.user_password },
                 {
@@ -145,6 +156,7 @@ const resolvers = {
             return [...user][1][0];
         },
         async updateEmail(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin","user"])
             let user = await models.user.update(
                 { user_email: args.user_email },
                 {
@@ -154,6 +166,7 @@ const resolvers = {
             return [...user][1][0];
         },
         async toggleUserRole(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin"])
             let user = await models.user.findOne({ where: { id: args.id } })
             let willBe = "";
             if (user.dataValues.user_role == 'user') {
@@ -170,10 +183,12 @@ const resolvers = {
             return [...userUpdate][1][0];
         },
         async deleteUser(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin"])
             await models.user.destroy({ where: { id: args.id } })
             return "Deleted user with id: " + args.id;
         },
         async createBook(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin"])
             let doesExist = await models.book.findOne({
                 where: {
                     [Op.or]:
@@ -209,10 +224,12 @@ const resolvers = {
 
         },
         async deleteBook(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin"])
             await models.book.destroy({ where: { id: args.id } })
             return "Deleted book with id: " + args.id;
         },
         async createBorrow(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin"])
             let today = new Date();
             let date_return = new Date();
             date_return.setDate(today.getDate() + 30);
@@ -232,7 +249,6 @@ const resolvers = {
                     }
                 });
                 if (found.length >= 0) {
-                    console.log('Aucun retard');
                     if (borrowCount < 5) {
                         const newBorrow = {
                             id: uuidv4(),
@@ -253,10 +269,12 @@ const resolvers = {
             lateReturn();
         },
         async deleteBorrow(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin"])
             await models.borrow.destroy({ where: { id: args.id } })
             return "Deleted borrow with id: " + args.id;
         },
         async createComment(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin","user"])
             let doesExist = await models.comment.findOne({
                 where: {
                     [Op.and]: [{ user_id: args.user_id }, { book_id: args.book_id }]
@@ -281,6 +299,7 @@ const resolvers = {
             return newComment;
         },
         async deleteComment(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin","user"])
             try {
                 await models.comment.destroy({ where: { id: args.id } })
                 return "Deleted comment with id: " + args.id;
@@ -290,6 +309,7 @@ const resolvers = {
 
         },
         async giveOpinion(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin","user"])
             let doesExist = await models.opinion.findOne({
                 where: {
                     [Op.and]: [{ user_id: args.user_id }, { comment_id: args.comment_id }]
@@ -314,6 +334,7 @@ const resolvers = {
             }
         },
         async bookReturn(root, args, { req, models }) {
+            auth(req, process.env.SECRET, ["admin"])
             let doesExist = await models.borrow.findOne({
                 where: {
                     [Op.and]: [{ id: args.id }, { status: 'active' }]

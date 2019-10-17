@@ -35,42 +35,26 @@ const server = new _apolloServerExpress.ApolloServer({
 });
 const app = (0, _express.default)();
 app.get('/', (req, res) => {
-  //console.log(req.headers);
   res.sendFile(__dirname + "/front.html");
-}); // let TestUser = {
-//   username: "pipil",
-//   password: "pol"
-// }
-
+});
 app.get('/login', (req, res) => {
-  // TestUser.logged = false;
-  //console.log(req.headers)
-  var token = _jsonwebtoken.default.sign({
+  let usertoken = _jsonwebtoken.default.sign({
     role: 'user'
   }, process.env.SECRET, {
     algorithm: 'HS256'
   });
 
-  res.send(`token user : ${token}`);
-  console.log(token); // jwt.sign({
-  //   payload: 'freeeze!'
-  // }, privateKey, {
-  //   algorithm: 'RS256'
-  // }, function(err, token) {
-  //   console.log(token);
-  // });
-  // res.send(`
-  // <form method="POST"action="./auth.js">
-  //     <input type="text" name="test" placeholder="Login">
-  //     <input type="password" name="pass" placeholder="Password">
-  //     <input type="submit" value="login">
-  // </form>`);
-}); // if (TestUser.logged == true) {
+  let admintoken = _jsonwebtoken.default.sign({
+    role: 'admin'
+  }, process.env.SECRET, {
+    algorithm: 'HS256'
+  });
 
-app.post('/login', (req, res) => {
-  res.send(`<p>It Works</p>`);
-}); // }
-
+  res.send(`
+  <p>token user : </p><textarea>${usertoken}</textarea><br />
+  <p>token admin : </p><textarea>${admintoken}</textarea><br />
+  `);
+});
 server.applyMiddleware({
   app,
   path: "/explore"

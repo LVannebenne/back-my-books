@@ -28,51 +28,35 @@ const server = new ApolloServer({
   introspection: true,
   playground: true,
 });
+
 const app = express();
 
 app.get('/', (req, res) => {
-  //console.log(req.headers);
   res.sendFile(__dirname + "/front.html");
 });
-// let TestUser = {
-//   username: "pipil",
-//   password: "pol"
-// }
+
 app.get('/login', (req, res) => {
-  // TestUser.logged = false;
-  //console.log(req.headers)
-  var token = jwt.sign({
+  let usertoken = jwt.sign({
     role: 'user'
   }, process.env.SECRET, {
     algorithm: 'HS256'
   });
-  res.send(`token user : ${token}`)
-  console.log(token)
-  // jwt.sign({
-  //   payload: 'freeeze!'
-  // }, privateKey, {
-  //   algorithm: 'RS256'
-  // }, function(err, token) {
-  //   console.log(token);
-  // });
-
-  // res.send(`
-  // <form method="POST"action="./auth.js">
-  //     <input type="text" name="test" placeholder="Login">
-  //     <input type="password" name="pass" placeholder="Password">
-  //     <input type="submit" value="login">
-  // </form>`);
+  let admintoken = jwt.sign({
+    role: 'admin'
+  }, process.env.SECRET, {
+    algorithm: 'HS256'
+  });
+  res.send(`
+  <p>token user : </p><textarea>${usertoken}</textarea><br />
+  <p>token admin : </p><textarea>${admintoken}</textarea><br />
+  `)
 });
 
-// if (TestUser.logged == true) {
-app.post('/login', (req, res) => {
-  res.send(`<p>It Works</p>`);
-});
-// }
 server.applyMiddleware({
   app,
   path: "/explore"
 });
+
 models.sequelize.authenticate();
 
 models.sequelize.sync();
