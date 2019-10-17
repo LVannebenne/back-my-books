@@ -25,6 +25,7 @@ Some guy called Jeff asked us for a library manager for his books, so we did it!
  If you want to query the *Playground* with some authentication, you can get it from [here](https://back-my-books-project.herokuapp.com/login).
 
 ## How to use Sequelize-CLI : 
+
 `npm run build:server`
 
 In the  `src/` folder : 
@@ -98,7 +99,7 @@ An error will occur if the user tries to give back a book that he never borrowed
     createComment()
 
 An error will occur if the user already gave his opinion on the book. 
-*No need for bloat in the comment section* 
+*give the book a thumbs up, please* 
 
 #### Opinions
 
