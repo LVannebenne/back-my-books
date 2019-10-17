@@ -59,6 +59,9 @@ server.applyMiddleware({
   app,
   path: "/explore"
 });
+app.get('/*', (req, res) => {
+  res.redirect('/');
+});
 
 _models.default.sequelize.authenticate();
 
