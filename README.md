@@ -116,9 +116,9 @@ An error will occur if a user's username **or** email are in the database.
 ### Have fun !
 
 ``` 
-🦄- Lindsay Vannebenne
-🕶- Michael Jacquemart
-🔭- Victor Philippe
+🦄   Lindsay Vannebenne
+🕶  Michael Jacquemart
+🔭  Victor Philippe
 ```
 
 
