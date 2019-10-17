@@ -7,11 +7,7 @@ module.exports = {
     return queryInterface.bulkInsert('books', [{
       id: uuidv4(),
       book_ISBN10: "0451524934",
-<<<<<<< HEAD
-      book_ISBN13: "9780451524935",
-=======
       book_ISBN13: "978-0-4515-2493-5",
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
       book_title: "1984",
       book_subtitle: "",
       book_authors: ["George Orwell"],
@@ -22,8 +18,6 @@ module.exports = {
       book_stock: 1,
       createdAt: new Date(),
       updatedAt: new Date()
-<<<<<<< HEAD
-=======
     }, {
       id: uuidv4(),
       book_ISBN13: "978-2-84172-895-4",
@@ -50,7 +44,6 @@ module.exports = {
       book_stock: 1,
       createdAt: new Date(),
       updatedAt: new Date()
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
     }], {});
     /*
       Add altering commands here.

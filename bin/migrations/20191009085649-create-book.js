@@ -1,22 +1,15 @@
 'use strict';
 
-<<<<<<< HEAD
-=======
 const uuidv4 = require("uuid/v4");
 
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('books', {
       id: {
         allowNull: false,
         primaryKey: true,
-<<<<<<< HEAD
-        type: Sequelize.UUID
-=======
         type: Sequelize.UUID,
         defaultValue: uuidv4()
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
       },
       book_ISBN10: {
         type: Sequelize.STRING

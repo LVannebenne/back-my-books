@@ -18,9 +18,6 @@ module.exports = (sequelize, DataTypes) => {
     book_stock: DataTypes.INTEGER
   }, {});
 
-<<<<<<< HEAD
-  book.associate = function (models) {// associations can be defined here
-=======
   book.associate = function (models) {
     // associations can be defined here
     book.hasMany(models.comment, {
@@ -28,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       as: 'comment',
       targetKey: 'book_id'
     });
->>>>>>> 707c5e0156fb32f924b0e1f4b11ccdc76ada6e81
   };
 
   return book;
