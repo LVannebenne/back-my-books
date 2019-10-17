@@ -1,8 +1,7 @@
 
-[Our demo website](https://back-my-books-project.herokuapp.com/)
-(On Heroku)
 
-# Back-my-books
+
+# Back my books 📓
 
 Our last (but not least) Becode Project !
 
@@ -10,6 +9,8 @@ Some guy called Jeff asked us for a library manager for his books, so we did it!
 
 *With GraphQL* 
 
+[Our demo website](https://back-my-books-project.herokuapp.com/)
+(On Heroku)
 ## Stack Technique 
 
 * Node.js (Server)
@@ -22,7 +23,9 @@ Some guy called Jeff asked us for a library manager for his books, so we did it!
 
 ## How to use Sequelize-CLI : 
 `npm run build`
+
 In the  `src/` folder : 
+
 `npm install --save-dev sequelize-cli`
 
 
@@ -84,19 +87,22 @@ An error will occur if a user already borrowed 5 books
 
     bookReturn()
 
-An error will occur if the user tries to give back a book that he never borrowed. *maybe he stole it ?*
+An error will occur if the user tries to give back a book that he never borrowed. 
+*maybe he stole it ?*
 
 #### Comments
 
     createComment()
 
-An error will occur if the user already gave his opinion on the book. *No need for bloat in the comment section* 
+An error will occur if the user already gave his opinion on the book. 
+*No need for bloat in the comment section* 
 
 #### Opinions
 
     giveOpinion()
 
-An error will occur if the user tries to reply more than once on a comment *No need for drama in the comment section* 
+An error will occur if the user tries to reply more than once on a comment 
+*No need for drama in the comment section* 
 
 #### Users
 
@@ -105,3 +111,5 @@ An error will occur if the user tries to reply more than once on a comment *No n
 An error will occur if a user's username **or** email are in the database. 
 
 **For _obvious_ reasons**  
+
+### Have fun !
