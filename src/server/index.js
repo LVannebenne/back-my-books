@@ -15,14 +15,14 @@ const server = new ApolloServer({
     req
   }) => {
     // get the user token from the headers
-    const token = req.headers.authorization || '';
+    //const token = req.headers.authorization || '';
 
     // try to retrieve a user with the token
     // const user = getUser(token);
 
     // add the user to the context
     return {
-      token,
+      req,
       models
     };
   },

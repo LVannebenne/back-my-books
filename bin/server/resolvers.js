@@ -9,7 +9,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const resolvers = {
   Query: {
     async getAllUsers(root, args, {
-      token,
+      req,
       models
     }) {
       const users = await models.user.findAll({
@@ -19,7 +19,7 @@ const resolvers = {
     },
 
     async getUser(root, args, {
-      token,
+      req,
       models
     }) {
       const user = await models.user.findOne({
@@ -31,16 +31,17 @@ const resolvers = {
     },
 
     async getAllBooks(root, args, {
-      token,
+      req,
       models
     }) {
+      console.log(req);
       return await models.book.findAll({
         limit: args.limit || 5
       });
     },
 
     async getBook(root, args, {
-      token,
+      req,
       models
     }) {
       return await models.book.findOne({
@@ -51,7 +52,7 @@ const resolvers = {
     },
 
     async getAllBorrows(root, args, {
-      token,
+      req,
       models
     }) {
       let borrows = await models.borrow.findAll({
@@ -62,7 +63,7 @@ const resolvers = {
     },
 
     async getBorrow(root, args, {
-      token,
+      req,
       models
     }) {
       let borrow = await models.borrow.findOne({
@@ -75,7 +76,7 @@ const resolvers = {
     },
 
     async getLateBorrows(root, args, {
-      token,
+      req,
       models
     }) {
       let today = new Date();
@@ -100,7 +101,7 @@ const resolvers = {
     },
 
     async getAllComments(root, args, {
-      token,
+      req,
       models
     }) {
       const comments = await models.comment.findAll({
@@ -110,7 +111,7 @@ const resolvers = {
     },
 
     async getCommentsByBook(root, args, {
-      token,
+      req,
       models
     }) {
       try {
@@ -150,7 +151,7 @@ const resolvers = {
     },
 
     async getCommentsByUser(root, args, {
-      token,
+      req,
       models
     }) {
       try {
@@ -190,7 +191,7 @@ const resolvers = {
     },
 
     async getOpinions(root, args, {
-      token,
+      req,
       models
     }) {
       let opinions = await models.opinion.findAll({
@@ -200,7 +201,7 @@ const resolvers = {
         include: ['user', 'comment']
       });
       return opinions;
-    } //     async login(root, args, { token, models }) {
+    } //     async login(root, args, { req, models }) {
     //       const user = await models.users.findOne( { where: { users_username:  args.users_username && users_password:   args.users_username } );
     //       return user;
     //     }
@@ -209,7 +210,7 @@ const resolvers = {
   },
   Mutation: {
     async createUser(root, args, {
-      token,
+      req,
       models
     }) {
       let doesExist = await models.user.findOne({
@@ -248,7 +249,7 @@ const resolvers = {
     },
 
     async updateUsername(root, args, {
-      token,
+      req,
       models
     }) {
       let user = await models.user.update({
@@ -263,7 +264,7 @@ const resolvers = {
     },
 
     async updatePassword(root, args, {
-      token,
+      req,
       models
     }) {
       let user = await models.user.update({
@@ -278,7 +279,7 @@ const resolvers = {
     },
 
     async updateEmail(root, args, {
-      token,
+      req,
       models
     }) {
       let user = await models.user.update({
@@ -293,7 +294,7 @@ const resolvers = {
     },
 
     async toggleUserRole(root, args, {
-      token,
+      req,
       models
     }) {
       let user = await models.user.findOne({
@@ -321,7 +322,7 @@ const resolvers = {
     },
 
     async deleteUser(root, args, {
-      token,
+      req,
       models
     }) {
       await models.user.destroy({
@@ -333,7 +334,7 @@ const resolvers = {
     },
 
     async createBook(root, args, {
-      token,
+      req,
       models
     }) {
       let doesExist = await models.book.findOne({
@@ -378,7 +379,7 @@ const resolvers = {
     },
 
     async deleteBook(root, args, {
-      token,
+      req,
       models
     }) {
       await models.book.destroy({
@@ -390,7 +391,7 @@ const resolvers = {
     },
 
     async createBorrow(root, args, {
-      token,
+      req,
       models
     }) {
       let today = new Date();
@@ -446,7 +447,7 @@ const resolvers = {
     },
 
     async deleteBorrow(root, args, {
-      token,
+      req,
       models
     }) {
       await models.borrow.destroy({
@@ -458,7 +459,7 @@ const resolvers = {
     },
 
     async createComment(root, args, {
-      token,
+      req,
       models
     }) {
       let doesExist = await models.comment.findOne({
@@ -493,7 +494,7 @@ const resolvers = {
     },
 
     async deleteComment(root, args, {
-      token,
+      req,
       models
     }) {
       try {
@@ -509,7 +510,7 @@ const resolvers = {
     },
 
     async giveOpinion(root, args, {
-      token,
+      req,
       models
     }) {
       let doesExist = await models.opinion.findOne({
@@ -542,7 +543,7 @@ const resolvers = {
     },
 
     async bookReturn(root, args, {
-      token,
+      req,
       models
     }) {
       let doesExist = await models.borrow.findOne({

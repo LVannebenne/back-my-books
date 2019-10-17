@@ -4,30 +4,31 @@ import { Op } from "sequelize";
 
 const resolvers = {
     Query: {
-        async getAllUsers(root, args, { token, models }) {
+        async getAllUsers(root, args, { req, models }) {
             const users = await models.user.findAll({ limit: args.limit || 5 });
             return users;
         },
-        async getUser(root, args, { token, models }) {
+        async getUser(root, args, { req, models }) {
             const user = await models.user.findOne({ where: { id: args.id } });
             return user;
         },
-        async getAllBooks(root, args, { token, models }) {
+        async getAllBooks(root, args, { req, models }) {
+            console.log(req);
             return await models.book.findAll({ limit: args.limit || 5 });
         },
-        async getBook(root, args, { token, models }) {
+        async getBook(root, args, { req, models }) {
             return await models.book.findOne({ where: { id: args.id } });
 
         },
-        async getAllBorrows(root, args, { token, models }) {
+        async getAllBorrows(root, args, { req, models }) {
             let borrows = await models.borrow.findAll({ limit: args.limit || 5, include: ['user', 'book'] });
             return borrows;
         },
-        async getBorrow(root, args, { token, models }) {
+        async getBorrow(root, args, { req, models }) {
             let borrow = await models.borrow.findOne({ where: { id: args.id }, include: ['user', 'book'] });
             return borrow;
         },
-        async getLateBorrows(root, args, { token, models }) {
+        async getLateBorrows(root, args, { req, models }) {
             let today = new Date();
             try {
                 let borrows = await models.borrow.findAll({
@@ -42,11 +43,11 @@ const resolvers = {
             }
 
         },
-        async getAllComments(root, args, { token, models }) {
+        async getAllComments(root, args, { req, models }) {
             const comments = await models.comment.findAll({ limit: args.limit || 5 });
             return comments;
         },
-        async getCommentsByBook(root, args, { token, models }) {
+        async getCommentsByBook(root, args, { req, models }) {
             try {
                 let comments = await models.comment.findAll({ where: { book_id: args.book_id }, include: ['user', 'book'] });
                 for await (let comment of comments) {
@@ -65,7 +66,7 @@ const resolvers = {
             }
             catch (err) { console.log(err); throw new Error(err) }
         },
-        async getCommentsByUser(root, args, { token, models }) {
+        async getCommentsByUser(root, args, { req, models }) {
             try {
                 let comments = await models.comment.findAll({ where: { user_id: args.user_id }, include: ['user', 'book'] });
                 for await (let comment of comments) {
@@ -84,17 +85,17 @@ const resolvers = {
             }
             catch (err) { console.log(err); throw new Error(err) }
         },
-        async getOpinions(root, args, { token, models }) {
+        async getOpinions(root, args, { req, models }) {
             let opinions = await models.opinion.findAll({ where: { comment_id: args.comment_id }, include: ['user', 'comment'] });
             return opinions;
         },
-        //     async login(root, args, { token, models }) {
+        //     async login(root, args, { req, models }) {
         //       const user = await models.users.findOne( { where: { users_username:  args.users_username && users_password:   args.users_username } );
         //       return user;
         //     }
     },
     Mutation: {
-        async createUser(root, args, { token, models }) {
+        async createUser(root, args, { req, models }) {
             let doesExist = await models.user.findOne({
                 where: {
                     [Op.or]:
@@ -123,7 +124,7 @@ const resolvers = {
             }
 
         },
-        async updateUsername(root, args, { token, models }) {
+        async updateUsername(root, args, { req, models }) {
             let user = await models.user.update(
                 { user_username: args.user_username },
                 {
@@ -132,7 +133,7 @@ const resolvers = {
             );
             return [...user][1][0];
         },
-        async updatePassword(root, args, { token, models }) {
+        async updatePassword(root, args, { req, models }) {
             let user = await models.user.update(
                 { user_password: args.user_password },
                 {
@@ -141,7 +142,7 @@ const resolvers = {
             );
             return [...user][1][0];
         },
-        async updateEmail(root, args, { token, models }) {
+        async updateEmail(root, args, { req, models }) {
             let user = await models.user.update(
                 { user_email: args.user_email },
                 {
@@ -150,7 +151,7 @@ const resolvers = {
             );
             return [...user][1][0];
         },
-        async toggleUserRole(root, args, { token, models }) {
+        async toggleUserRole(root, args, { req, models }) {
             let user = await models.user.findOne({ where: { id: args.id } })
             let willBe = "";
             if (user.dataValues.user_role == 'user') {
@@ -166,11 +167,11 @@ const resolvers = {
             );
             return [...userUpdate][1][0];
         },
-        async deleteUser(root, args, { token, models }) {
+        async deleteUser(root, args, { req, models }) {
             await models.user.destroy({ where: { id: args.id } })
             return "Deleted user with id: " + args.id;
         },
-        async createBook(root, args, { token, models }) {
+        async createBook(root, args, { req, models }) {
             let doesExist = await models.book.findOne({
                 where: {
                     [Op.or]:
@@ -205,11 +206,11 @@ const resolvers = {
             }
 
         },
-        async deleteBook(root, args, { token, models }) {
+        async deleteBook(root, args, { req, models }) {
             await models.book.destroy({ where: { id: args.id } })
             return "Deleted book with id: " + args.id;
         },
-        async createBorrow(root, args, { token, models }) {
+        async createBorrow(root, args, { req, models }) {
             let today = new Date();
             let date_return = new Date();
             date_return.setDate(today.getDate() + 30);
@@ -249,11 +250,11 @@ const resolvers = {
             }
             lateReturn();
         },
-        async deleteBorrow(root, args, { token, models }) {
+        async deleteBorrow(root, args, { req, models }) {
             await models.borrow.destroy({ where: { id: args.id } })
             return "Deleted borrow with id: " + args.id;
         },
-        async createComment(root, args, { token, models }) {
+        async createComment(root, args, { req, models }) {
             let doesExist = await models.comment.findOne({
                 where: {
                     [Op.and]: [{ user_id: args.user_id }, { book_id: args.book_id }]
@@ -277,7 +278,7 @@ const resolvers = {
             await models.comment.create(newComment);
             return newComment;
         },
-        async deleteComment(root, args, { token, models }) {
+        async deleteComment(root, args, { req, models }) {
             try {
                 await models.comment.destroy({ where: { id: args.id } })
                 return "Deleted comment with id: " + args.id;
@@ -286,7 +287,7 @@ const resolvers = {
             }
 
         },
-        async giveOpinion(root, args, { token, models }) {
+        async giveOpinion(root, args, { req, models }) {
             let doesExist = await models.opinion.findOne({
                 where: {
                     [Op.and]: [{ user_id: args.user_id }, { comment_id: args.comment_id }]
@@ -310,7 +311,7 @@ const resolvers = {
                 return newOpinion;
             }
         },
-        async bookReturn(root, args, { token, models }) {
+        async bookReturn(root, args, { req, models }) {
             let doesExist = await models.borrow.findOne({
                 where: {
                     [Op.and]: [{ id: args.id }, { status: 'active' }]
